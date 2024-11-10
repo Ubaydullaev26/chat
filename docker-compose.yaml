@@ -1,0 +1,35 @@
+version: '3.3'
+
+services:
+  django:
+    container_name: web_truck
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    command: >
+      sh -c "
+        python manage.py migrate &&
+        python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"  # Прокидываем порт 8000 для Django
+    depends_on:
+      - db  # Заменили dbb на db
+
+  db:
+    container_name: db
+    image: postgres:13  # Стандартный образ PostgreSQL
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: db_name
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432  # Открывает порт для связи между контейнерами
+
+volumes:
+  postgres_data:
