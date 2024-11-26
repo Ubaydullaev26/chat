@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'chat',
     'channels',
     'api',
+    'drf_spectacular',
     'drf_yasg',
 
 
