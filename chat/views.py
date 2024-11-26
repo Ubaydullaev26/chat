@@ -9,6 +9,8 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import RoomSerializer, MessageSerializer, OperatorRegistrationSerializer
 from django.http import Http404
 from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
 
 
 # Regular Django views
@@ -72,7 +74,33 @@ class MessageListView(APIView):
     
     
 class RegisterOperatorView(APIView):
+    
+    @swagger_auto_schema(
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'username': openapi.Schema(type=openapi.TYPE_STRING, description="Имя пользователя для регистрации"),
+            'password': openapi.Schema(type=openapi.TYPE_STRING, description="Пароль для нового аккаунта"),
+            'email': openapi.Schema(type=openapi.TYPE_STRING, description="Электронная почта пользователя"),
+            'phone_number': openapi.Schema(type=openapi.TYPE_STRING, description="Номер телефона в формате +1234567890"),
+        },
+        required=['username', 'password', 'email', 'phone_number']
+    ),
+    responses={
+        status.HTTP_201_CREATED: openapi.Response(
+            description="Operator registered successfully!",
+            examples={
+                'application/json': {'message': 'Operator registered successfully!'}
+            }
+        ),
+        status.HTTP_400_BAD_REQUEST: openapi.Response(
+            description="Invalid data"
+        ),
+    }
+)
+
     def post(self, request):
+        # Use the serializer to validate and save the data
         serializer = OperatorRegistrationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
