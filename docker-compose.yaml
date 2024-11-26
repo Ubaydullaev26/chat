@@ -10,8 +10,8 @@ services:
       sh -c "
         python manage.py migrate &&
         python manage.py runserver 0.0.0.0:8000"
-    volumes:
-      - .:/app
+    # volumes:
+    #   - .:/app
     ports:
       - "8000:8000"  # Прокидываем порт 8000 для Django
     depends_on:
