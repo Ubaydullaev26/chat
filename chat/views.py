@@ -6,7 +6,7 @@ from rest_framework import viewsets, status
 
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from .serializers import RoomSerializer, MessageSerializer
+from .serializers import RoomSerializer, MessageSerializer, OperatorRegistrationSerializer
 from django.http import Http404
 from drf_yasg.utils import swagger_auto_schema
 
@@ -38,6 +38,7 @@ class RoomView(APIView):
             # Пример возвращаемых данных — здесь можно добавить нужную логику
             data = {
                 'room_name': room.name,
+                'id': user.id
                 # Возможно, стоит добавить больше информации о комнате
             }
             return Response(data)
@@ -67,4 +68,13 @@ class MessageListView(APIView):
         if serializer.is_valid():
             serializer.save(user=request.user, room_id=room_id)  # Устанавливаем пользователя и комнату
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+class RegisterOperatorView(APIView):
+    def post(self, request):
+        serializer = OperatorRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Operator registered successfully!'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
