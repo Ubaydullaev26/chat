@@ -78,12 +78,12 @@ class RegisterOperatorView(APIView):
     @swagger_auto_schema(
     request_body=openapi.Schema(
         type=openapi.TYPE_OBJECT,
-        properties={
-            'username': openapi.Schema(type=openapi.TYPE_STRING, description="Имя пользователя для регистрации"),
-            'password': openapi.Schema(type=openapi.TYPE_STRING, description="Пароль для нового аккаунта"),
-            'email': openapi.Schema(type=openapi.TYPE_STRING, description="Электронная почта пользователя"),
-            'phone_number': openapi.Schema(type=openapi.TYPE_STRING, description="Номер телефона в формате +1234567890"),
-        },
+        properties= {
+    'username': openapi.Schema(type=openapi.TYPE_STRING, description="Имя пользователя для регистрации"),
+    'password': openapi.Schema(type=openapi.TYPE_STRING, description="Пароль для нового аккаунта"),
+    'email': openapi.Schema(type=openapi.TYPE_STRING, format='email', description="Электронная почта пользователя"),
+    'phone_number': openapi.Schema(type=openapi.TYPE_STRING, pattern=r'^\+\d{10,15}$', description="Номер телефона в формате +1234567890"),
+},
         required=['username', 'password', 'email', 'phone_number']
     ),
     responses={
