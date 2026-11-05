@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<title>Мадина и миома</title>
+<style>
+@font-face{font-family:Nunito;font-weight:700;src:url(fonts/nunito-cyrillic-700-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:Nunito;font-weight:700;src:url(fonts/nunito-latin-700-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2122,U+2212}
+@font-face{font-family:Nunito;font-weight:800;src:url(fonts/nunito-cyrillic-800-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:Nunito;font-weight:800;src:url(fonts/nunito-latin-800-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2122,U+2212}
+@font-face{font-family:Nunito;font-weight:900;src:url(fonts/nunito-cyrillic-900-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:Nunito;font-weight:900;src:url(fonts/nunito-latin-900-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2122,U+2212}
+html,body{margin:0;padding:0;background:#fff;overflow:hidden}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:Nunito,'Noto Color Emoji',sans-serif;color:#3a1f2b}
+#stage svg{position:absolute;left:0;top:0}
+.cap{position:absolute;left:70px;right:70px;display:flex;justify-content:center;opacity:0;will-change:transform,opacity}
+.cap>div{background:#fff;border-radius:38px;padding:24px 38px;text-align:center;box-shadow:0 10px 0 rgba(160,40,80,.18),0 18px 40px rgba(120,20,60,.18)}
+.big>div{font-weight:900;font-size:66px;line-height:1.12}
+.sub>div{font-weight:800;font-size:46px;line-height:1.2;background:#fff7fa}
+.cap b{color:#e8336f}
+.tiny>div{font-weight:700;font-size:28px;line-height:1.25;background:rgba(255,255,255,.75);box-shadow:none;padding:12px 24px;color:#6d4a58}
+.card{position:absolute;box-sizing:border-box;display:flex;align-items:center;gap:22px;background:#fff;border-radius:30px;padding:16px 24px;box-shadow:0 8px 0 rgba(160,40,80,.16),0 14px 30px rgba(120,20,60,.15);opacity:0;font-weight:800;font-size:40px;line-height:1.15}
+.card .ic{font-size:60px;flex:none;width:84px;height:84px;border-radius:24px;display:flex;align-items:center;justify-content:center;background:#ffe3ec}
+.card small{display:block;font-weight:700;font-size:30px;color:#8a5a6c;margin-top:4px}
+.pill{position:absolute;left:0;right:0;display:flex;justify-content:center;opacity:0}
+.pill>div{font-weight:900;font-size:58px;padding:20px 46px;border-radius:999px;color:#fff;background:#2fb36d;box-shadow:0 8px 0 #1e8a50,0 16px 30px rgba(0,80,40,.25)}
+#bignum{position:absolute;left:0;right:0;top:560px;text-align:center;font-weight:900;font-size:250px;line-height:1;color:#e8336f;opacity:0;text-shadow:0 10px 0 rgba(160,40,80,.15)}
+#bignum .sm{font-size:120px;color:#a2385f}
+</style></head>
+<body>
+<div id="stage">
+<svg id="svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="gRoom" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe6e1"/><stop offset="1" stop-color="#ffcfd6"/></linearGradient>
+    <radialGradient id="gInside" cx=".5" cy=".5" r=".75"><stop offset="0" stop-color="#fff3f7"/><stop offset=".6" stop-color="#fbd0df"/><stop offset="1" stop-color="#e9a3c0"/></radialGradient>
+    <linearGradient id="gStats" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0f6"/><stop offset="1" stop-color="#ffd3e4"/></linearGradient>
+    <linearGradient id="gClinic" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8f4ff"/><stop offset="1" stop-color="#cfe6fb"/></linearGradient>
+    <linearGradient id="gTreat" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff5e6"/><stop offset="1" stop-color="#ffdcc2"/></linearGradient>
+    <linearGradient id="gFinal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd1e3"/><stop offset=".5" stop-color="#ffe9d6"/><stop offset="1" stop-color="#ffc2d6"/></linearGradient>
+    <radialGradient id="gUS" cx=".5" cy="0" r="1"><stop offset="0" stop-color="#cfd8dc"/><stop offset=".7" stop-color="#78909c"/><stop offset="1" stop-color="#37474f"/></radialGradient>
+    <radialGradient id="gFib" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#f08a9e"/><stop offset="1" stop-color="#c2405f"/></radialGradient>
+    <radialGradient id="gPain" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ff3d5a" stop-opacity=".75"/><stop offset="1" stop-color="#ff3d5a" stop-opacity="0"/></radialGradient>
+    <clipPath id="clipFan"><path id="fanPathClip" d=""/></clipPath>
+    <path id="heart" d="M0,12 C-30,-12 -18,-38 0,-24 C18,-38 30,-12 0,12 Z"/>
+  </defs>
+
+  <!-- ===== Backgrounds ===== -->
+  <g id="bgRoom">
+    <rect width="1080" height="1920" fill="url(#gRoom)"/>
+    <!-- wallpaper dots -->
+    <g id="dots" fill="#ffffff" opacity=".45"></g>
+    <!-- window -->
+    <g transform="translate(640,760)">
+      <rect x="-14" y="-14" width="348" height="428" rx="26" fill="#fff"/>
+      <rect width="320" height="400" rx="16" fill="#bfe6ff"/>
+      <circle cx="235" cy="95" r="44" fill="#fff3a6"/>
+      <ellipse cx="90" cy="150" rx="70" ry="26" fill="#fff"/><ellipse cx="130" cy="135" rx="45" ry="26" fill="#fff"/>
+      <rect x="152" width="16" height="400" fill="#fff"/><rect y="192" width="320" height="16" fill="#fff"/>
+      <path d="M-30,-30 Q60,140 -10,430 L-40,430 L-40,-30Z" fill="#ff9fb4"/>
+      <path d="M350,-30 Q260,140 330,430 L360,430 L360,-30Z" fill="#ff9fb4"/>
+      <rect x="-50" y="-44" width="420" height="18" rx="9" fill="#d9738b"/>
+    </g>
+    <!-- floor -->
+    <rect y="1480" width="1080" height="440" fill="#f2b3b0"/>
+    <rect y="1480" width="1080" height="16" fill="#e59a99"/>
+    <!-- plant -->
+    <g transform="translate(130,1480)">
+      <path d="M0,-120 C-70,-200 -60,-300 -10,-330 C0,-260 10,-200 0,-120Z" fill="#5fbf7f"/>
+      <path d="M0,-120 C70,-210 90,-280 50,-340 C20,-270 10,-200 0,-120Z" fill="#4aa86a"/>
+      <path d="M0,-110 C-90,-150 -120,-210 -110,-250 C-60,-220 -20,-180 0,-110Z" fill="#6fd08d"/>
+      <path d="M-60,-130 L60,-130 L45,0 L-45,0Z" fill="#e97a5a"/>
+      <rect x="-68" y="-145" width="136" height="26" rx="10" fill="#d4664a"/>
+    </g>
+    <!-- lamp -->
+    <g transform="translate(960,1480)">
+      <rect x="-6" y="-420" width="12" height="420" fill="#a1586c"/>
+      <ellipse cx="0" cy="-6" rx="50" ry="12" fill="#a1586c"/>
+      <path d="M-70,-420 L70,-420 L45,-520 L-45,-520Z" fill="#ffe08a"/>
+    </g>
+  </g>
+
+  <g id="bgInside" opacity="0">
+    <rect width="1080" height="1920" fill="url(#gInside)"/>
+    <g id="bubbles" fill="#fff" opacity=".35"></g>
+  </g>
+
+  <g id="bgStats" opacity="0">
+    <rect width="1080" height="1920" fill="url(#gStats)"/>
+    <g id="womenRow"></g>
+  </g>
+
+  <g id="bgClinic" opacity="0">
+    <rect width="1080" height="1920" fill="url(#gClinic)"/>
+    <rect y="1490" width="1080" height="430" fill="#b7d6f2"/>
+    <rect y="1490" width="1080" height="14" fill="#9cc3e6"/>
+    <!-- red cross sign -->
+    <g transform="translate(120,760)">
+      <rect x="-60" y="-60" width="120" height="120" rx="24" fill="#fff"/>
+      <rect x="-14" y="-40" width="28" height="80" rx="6" fill="#ff5c7a"/>
+      <rect x="-40" y="-14" width="80" height="28" rx="6" fill="#ff5c7a"/>
+    </g>
+    <!-- monitor -->
+    <g id="monitor">
+      <rect x="532" y="1040" width="16" height="230" fill="#90a4ae"/>
+      <rect x="470" y="1262" width="140" height="22" rx="11" fill="#90a4ae"/>
+      <rect x="350" y="740" width="380" height="310" rx="28" fill="#455a64"/>
+      <rect x="366" y="756" width="348" height="278" rx="18" fill="#1d262b"/>
+      <g clip-path="url(#clipFan)">
+        <path id="fanPath" d="" fill="url(#gUS)"/>
+        <g id="speckle" fill="#eceff1"></g>
+        <g id="usNode" opacity="0">
+          <ellipse cx="540" cy="935" rx="46" ry="40" fill="#1f2a30"/>
+          <ellipse cx="540" cy="935" rx="46" ry="40" fill="none" stroke="#e0e6e9" stroke-width="4" opacity=".7"/>
+        </g>
+        <line id="scanLine" x1="540" y1="772" x2="540" y2="1030" stroke="#b3f5ff" stroke-width="4" opacity=".6"/>
+      </g>
+      <g id="usLabel" opacity="0">
+        <line x1="500" y1="920" x2="455" y2="860" stroke="#ffeb3b" stroke-width="4"/>
+        <text x="380" y="852" font-family="Nunito" font-weight="900" font-size="30" fill="#ffeb3b">миома</text>
+      </g>
+    </g>
+  </g>
+
+  <g id="bgTreat" opacity="0">
+    <rect width="1080" height="1920" fill="url(#gTreat)"/>
+    <g id="sparkTreat" fill="#ffb27a" opacity=".5"></g>
+  </g>
+
+  <g id="bgFinal" opacity="0">
+    <rect width="1080" height="1920" fill="url(#gFinal)"/>
+    <g id="rays" opacity=".35"></g>
+    <rect y="1640" width="1080" height="280" fill="#ffb3c8" opacity=".6"/>
+  </g>
+
+  <!-- ===== Uterus ===== -->
+  <g id="uterusWrap" opacity="0">
+    <g id="uterus">
+      <!-- tubes -->
+      <path d="M-190,-140 C-270,-200 -360,-200 -410,-140" fill="none" stroke="#f48fb1" stroke-width="34" stroke-linecap="round"/>
+      <path d="M190,-140 C270,-200 360,-200 410,-140" fill="none" stroke="#f48fb1" stroke-width="34" stroke-linecap="round"/>
+      <g fill="#f48fb1">
+        <ellipse cx="-425" cy="-112" rx="22" ry="40" transform="rotate(-25,-425,-112)"/>
+        <ellipse cx="-445" cy="-80" rx="16" ry="34" transform="rotate(-10,-445,-80)"/>
+        <ellipse cx="425" cy="-112" rx="22" ry="40" transform="rotate(25,425,-112)"/>
+        <ellipse cx="445" cy="-80" rx="16" ry="34" transform="rotate(10,445,-80)"/>
+      </g>
+      <!-- ovaries -->
+      <ellipse cx="-320" cy="-30" rx="62" ry="42" fill="#f9c1d6" stroke="#e27aa0" stroke-width="6"/>
+      <ellipse cx="320" cy="-30" rx="62" ry="42" fill="#f9c1d6" stroke="#e27aa0" stroke-width="6"/>
+      <path d="M-262,-40 L-205,-80" stroke="#e27aa0" stroke-width="8" stroke-linecap="round"/>
+      <path d="M262,-40 L205,-80" stroke="#e27aa0" stroke-width="8" stroke-linecap="round"/>
+      <!-- body -->
+      <path d="M-170,-175 C-235,-175 -255,-80 -225,20 C-195,120 -95,180 -58,230 L-52,330 Q0,352 52,330 L58,230 C95,180 195,120 225,20 C255,-80 235,-175 170,-175 Q0,-205 -170,-175Z" fill="#f48fb1" stroke="#d45a87" stroke-width="8"/>
+      <path d="M-110,-120 Q0,-140 110,-120 Q40,-20 16,160 L-16,160 Q-40,-20 -110,-120Z" fill="#fde1ea"/>
+      <!-- fibroids -->
+      <g id="fib1" transform="translate(-150,-30)"><g class="fs">
+        <circle r="58" fill="url(#gFib)" stroke="#9c2948" stroke-width="6"/>
+        <path d="M-30,-10 Q0,-34 30,-10 M-36,12 Q0,-14 36,12" stroke="#a8344f" stroke-width="4" fill="none" opacity=".5"/>
+        <circle cx="-17" cy="6" r="7" fill="#3b1420"/><circle cx="17" cy="6" r="7" fill="#3b1420"/>
+        <path d="M-12,30 Q0,22 12,30" stroke="#3b1420" stroke-width="5" fill="none" stroke-linecap="round"/>
+      </g></g>
+      <g id="fib2" transform="translate(150,-188)"><g class="fs">
+        <circle r="72" fill="url(#gFib)" stroke="#9c2948" stroke-width="6"/>
+        <path d="M-40,-14 Q0,-44 40,-14 M-46,14 Q0,-18 46,14" stroke="#a8344f" stroke-width="4" fill="none" opacity=".5"/>
+        <circle cx="-21" cy="8" r="8" fill="#3b1420"/><circle cx="21" cy="8" r="8" fill="#3b1420"/>
+        <path d="M-26,-14 L-12,-8 M26,-14 L12,-8" stroke="#3b1420" stroke-width="5" stroke-linecap="round"/>
+        <path d="M-14,36 Q0,26 14,36" stroke="#3b1420" stroke-width="5" fill="none" stroke-linecap="round"/>
+      </g></g>
+      <g id="fib3" transform="translate(28,-62)"><g class="fs">
+        <circle r="36" fill="url(#gFib)" stroke="#9c2948" stroke-width="5"/>
+        <circle cx="-11" cy="2" r="5" fill="#3b1420"/><circle cx="11" cy="2" r="5" fill="#3b1420"/>
+        <path d="M-7,17 Q0,12 7,17" stroke="#3b1420" stroke-width="4" fill="none" stroke-linecap="round"/>
+      </g></g>
+    </g>
+    <g id="fibLabel" opacity="0">
+      <path d="M840,734 L786,764" stroke="#9c2948" stroke-width="5" stroke-dasharray="12 10" fill="none" stroke-linecap="round"/>
+      <path d="M870,740 Q800,960 612,946" stroke="#9c2948" stroke-width="5" stroke-dasharray="12 10" fill="none" stroke-linecap="round"/>
+      <path d="M910,740 Q760,1080 440,985" stroke="#9c2948" stroke-width="5" stroke-dasharray="12 10" fill="none" stroke-linecap="round"/>
+      <rect x="760" y="668" width="250" height="64" rx="32" fill="#9c2948"/>
+      <text x="885" y="712" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="36" fill="#fff">узлы миомы</text>
+    </g>
+  </g>
+
+  <!-- ===== Characters ===== -->
+  <!-- ===== Particles ===== -->
+  <g id="hearts"></g>
+
+  <g id="doctorWrap" opacity="0"></g>
+  <g id="madinaZoom"><g id="madinaWrap"></g></g>
+</svg>
+
+<!-- ===== HTML text layer ===== -->
+<div id="layer"></div>
+<div id="bignum"><span class="sm">до </span><span id="numv">0</span><span class="sm">%</span></div>
+</div>
+
+<script>
+// ---------- helpers ----------
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const seg=(t,a,b)=>clamp((t-a)/(b-a));
+const eio=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+const eout=x=>1-Math.pow(1-x,3);
+const back=x=>{const c1=1.70158,c3=c1+1;return x<=0?0:1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+function win(t,a,b,fi=.45,fo=.45){const i=a<=0?1:seg(t,a,a+fi);const o=1-seg(t,b-fo,b);return Math.min(i,o);}
+let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+const NS='http://www.w3.org/2000/svg';
+const $=id=>document.getElementById(id);
+function svgEl(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);parent&&parent.appendChild(e);return e;}
+
+// ---------- decorative setup ----------
+for(let y=60;y<1480;y+=120)for(let x=(y/120%2)*60+30;x<1080;x+=120)svgEl('circle',{cx:x,cy:y,r:7},$('dots'));
+for(let i=0;i<26;i++)svgEl('circle',{cx:rnd()*1080,cy:rnd()*1920,r:8+rnd()*30},$('bubbles'));
+for(let i=0;i<18;i++){const g=svgEl('g',{transform:`translate(${rnd()*1080},${rnd()*1920}) scale(${.6+rnd()})`},$('sparkTreat'));svgEl('path',{d:'M0,-24 L6,-6 L24,0 L6,6 L0,24 L-6,6 L-24,0 L-6,-6Z'},g);}
+for(let i=0;i<16;i++){const a=i/16*Math.PI*2;svgEl('path',{d:`M540,1100 L${540+1600*Math.cos(a-.08)},${1100+1600*Math.sin(a-.08)} L${540+1600*Math.cos(a+.08)},${1100+1600*Math.sin(a+.08)}Z`,fill:'#fff'},$('rays'));}
+
+// women row (stats)
+const women=[];
+for(let i=0;i<10;i++){
+  const x=105+i*97, y=1250;
+  const g=svgEl('g',{transform:`translate(${x},${y})`},$('womenRow'));
+  const inner=svgEl('g',{},g);
+  svgEl('circle',{cx:0,cy:-120,r:26},inner);
+  svgEl('path',{d:'M-14,-92 L14,-92 L40,10 L-40,10Z'},inner);
+  svgEl('rect',{x:-22,y:10,width:14,height:40,rx:7},inner);
+  svgEl('rect',{x:8,y:10,width:14,height:40,rx:7},inner);
+  women.push(inner);
+}
+
+// ultrasound fan
+(function(){
+  const ax=540,ay=770,r=265,a1=55*Math.PI/180,a2=125*Math.PI/180;
+  const p=`M${ax},${ay} L${ax+r*Math.cos(a1)},${ay+r*Math.sin(a1)} A${r},${r} 0 0 1 ${ax+r*Math.cos(a2)},${ay+r*Math.sin(a2)} Z`;
+  $('fanPath').setAttribute('d',p);$('fanPathClip').setAttribute('d',p);
+  for(let i=0;i<260;i++)svgEl('circle',{cx:380+rnd()*320,cy:770+rnd()*270,r:1+rnd()*2.6,opacity:.15+rnd()*.45},$('speckle'));
+})();
+
+// ---------- characters ----------
+function armSVG(id,sx,sy,o){return `<g transform="translate(${sx},${sy})"><g id="${id}-u"><line x1="0" y1="0" x2="0" y2="170" stroke="${o.sleeve}" stroke-width="46" stroke-linecap="round"/><g id="${id}-f" transform="translate(0,170)"><line x1="0" y1="0" x2="0" y2="150" stroke="${o.skin}" stroke-width="36" stroke-linecap="round"/><circle cx="0" cy="158" r="27" fill="${o.skin}"/></g></g></g>`;}
+function personSVG(id,o){
+  const hairBack = o.style==='bun'
+    ? `<circle cx="0" cy="-948" r="64" fill="${o.hair}"/><circle cx="0" cy="-800" r="142" fill="${o.hair}"/>`
+    : `<path d="M-150,-790 Q-160,-960 0,-955 Q160,-960 150,-790 L160,-660 Q120,-640 95,-680 L-95,-680 Q-120,-640 -160,-660Z" fill="${o.hair}"/>`;
+  const coat = o.coat ? `<path d="M0,-640 L0,-262" stroke="#cfd8dc" stroke-width="5"/><rect x="-120" y="-420" width="70" height="60" rx="10" fill="none" stroke="#cfd8dc" stroke-width="5"/>
+      <path d="M-42,-648 Q-62,-520 0,-505 Q62,-520 42,-648" fill="none" stroke="#5c6bc0" stroke-width="9"/><circle cx="0" cy="-500" r="17" fill="#9fa8da" stroke="#5c6bc0" stroke-width="6"/>` :
+      `<path d="M-60,-640 Q0,-590 60,-640" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".8"/><rect x="-150" y="-470" width="300" height="26" fill="${o.belt}" opacity=".9"/>`;
+  return `<g id="${id}">
+   <ellipse cx="0" cy="0" rx="190" ry="26" fill="#000" opacity=".1"/>
+   <rect x="-70" y="-300" width="50" height="290" rx="25" fill="${o.skin}"/>
+   <rect x="20" y="-300" width="50" height="290" rx="25" fill="${o.skin}"/>
+   <ellipse cx="-52" cy="-10" rx="50" ry="22" fill="${o.shoe}"/>
+   <ellipse cx="52" cy="-10" rx="50" ry="22" fill="${o.shoe}"/>
+   <rect x="-26" y="-705" width="52" height="80" rx="20" fill="${o.skin}"/>
+   <path d="M-98,-645 Q0,-675 98,-645 L178,-262 Q0,-226 -178,-262Z" fill="${o.dress}" ${o.coat?'stroke="#cfd8dc" stroke-width="5"':''}/>
+   ${coat}
+   <circle id="${id}-pain" cx="0" cy="-420" r="150" fill="url(#gPain)" opacity="0"/>
+   ${armSVG(id+'-aL',-108,-605,o)}
+   ${armSVG(id+'-aR',108,-605,o)}
+   <g id="${id}-head">
+     ${hairBack}
+     <circle cx="0" cy="-782" r="126" fill="${o.skin}"/>
+     <ellipse cx="-128" cy="-772" rx="18" ry="26" fill="${o.skin}"/><ellipse cx="128" cy="-772" rx="18" ry="26" fill="${o.skin}"/>
+     <path d="M-128,-790 Q-115,-905 0,-912 Q115,-905 128,-790 Q95,-862 22,-856 Q-60,-884 -128,-790Z" fill="${o.hair}"/>
+     <ellipse cx="-78" cy="-738" rx="24" ry="14" fill="#ff8fa3" opacity=".55"/>
+     <ellipse cx="78" cy="-738" rx="24" ry="14" fill="#ff8fa3" opacity=".55"/>
+     <g id="${id}-eyes" fill="#2b1b17">
+       <ellipse id="${id}-eL" cx="-45" cy="-778" rx="13" ry="17"/>
+       <ellipse id="${id}-eR" cx="45" cy="-778" rx="13" ry="17"/>
+     </g>
+     <circle id="${id}-hL" cx="-40" cy="-784" r="4.5" fill="#fff"/><circle id="${id}-hR" cx="50" cy="-784" r="4.5" fill="#fff"/>
+     <path id="${id}-bL" d="" stroke="${o.brow}" stroke-width="9" fill="none" stroke-linecap="round"/>
+     <path id="${id}-bR" d="" stroke="${o.brow}" stroke-width="9" fill="none" stroke-linecap="round"/>
+     <path d="M-4,-752 Q4,-738 -6,-730" stroke="#c98d73" stroke-width="5" fill="none" stroke-linecap="round"/>
+     <path id="${id}-mo" d="" fill="#8a2c3a"/>
+     <path id="${id}-m" d="" stroke="#8a2c3a" stroke-width="8" fill="none" stroke-linecap="round"/>
+     <path id="${id}-sw" d="M112,-860 Q98,-832 112,-822 Q126,-832 112,-860Z" fill="#7fd3ff" opacity="0"/>
+     ${o.style==='bun'?`<circle cx="70" cy="-930" r="16" fill="#ff7096"/>`:''}
+   </g>
+  </g>`;
+}
+$('madinaWrap').innerHTML = personSVG('M',{skin:'#f6c9a8',hair:'#3a2320',brow:'#3a2320',dress:'#ff7a95',sleeve:'#ff7a95',belt:'#e4577a',shoe:'#a8304f',style:'bun'});
+$('doctorWrap').innerHTML = personSVG('D',{skin:'#e9b48f',hair:'#5a3a2a',brow:'#4a2e20',dress:'#ffffff',sleeve:'#ffffff',shoe:'#4f5b93',style:'bob',coat:true});
+
+function setFace(id,mood,blink){
+  const sad=clamp(-mood),hap=clamp(mood);
+  const ry=17*Math.max(.08,blink);
+  $(id+'-eL').setAttribute('ry',ry);$(id+'-eR').setAttribute('ry',ry);
+  $(id+'-hL').setAttribute('opacity',blink>.5?1:0);$(id+'-hR').setAttribute('opacity',blink>.5?1:0);
+  const iy=-826-16*sad+4*hap, oy=-820+8*sad-2*hap;
+  $(id+'-bL').setAttribute('d',`M-78,${oy} Q-50,${Math.min(iy,oy)-10} -22,${iy}`);
+  $(id+'-bR').setAttribute('d',`M78,${oy} Q50,${Math.min(iy,oy)-10} 22,${iy}`);
+  const my=-712, c=my+46*mood;
+  $(id+'-m').setAttribute('d',`M-34,${my} Q0,${c} 34,${my}`);
+  const open=clamp((mood-.55)/.45);
+  $(id+'-mo').setAttribute('d',`M-34,${my} Q0,${my+52*open} 34,${my}Z`);
+}
+function setArms(id,p){
+  $(id+'-aL-u').setAttribute('transform',`rotate(${p[0]})`);
+  $(id+'-aL-f').setAttribute('transform',`translate(0,170) rotate(${p[1]})`);
+  $(id+'-aR-u').setAttribute('transform',`rotate(${p[2]})`);
+  $(id+'-aR-f').setAttribute('transform',`translate(0,170) rotate(${p[3]})`);
+}
+const P={down:[8,4,-8,-4],rbelly:[8,4,-15,99],both:[15,-99,-15,99],up:[150,12,-150,-12],point:[118,8,-8,-4],wave:[8,4,-145,-25]};
+const mixP=(a,b,k)=>a.map((v,i)=>lerp(v,b[i],k));
+function blinkAt(t,offset=0){const ph=(t+offset)%3.3;return ph<.14?Math.abs(ph-.07)/.07:1;}
+
+// ---------- HTML text layer ----------
+const layer=$('layer');
+function addCap(cls,html,top,a,b){const d=document.createElement('div');d.className='cap '+cls;d.style.top=top+'px';d.innerHTML='<div>'+html+'</div>';layer.appendChild(d);return {el:d,a,b};}
+const caps=[
+  addCap('big','Это <b>Мадина</b>, ей 35 лет',250,.3,5.0),
+  addCap('sub','Она думала, что сильная боль и обильные месячные — это «норма»…',430,1.5,5.0),
+  addCap('big','Но симптомы <b>не проходили:</b>',290,5.3,12.3),
+  addCap('big','Причина — <b>миома матки</b>',250,13.2,20.2),
+  addCap('sub','Доброкачественный узел из мышечной ткани матки',410,14.3,20.2),
+  addCap('sub','Миома встречается <b>очень часто</b>',330,20.4,25.2),
+  addCap('sub','женщин сталкиваются с ней к 50 годам',840,21.0,25.2),
+  addCap('sub','Часто протекает <b>без симптомов</b> — поэтому важно проверяться',1330,22.4,25.2),
+  addCap('big','Как узнать точно?',250,25.4,31.2),
+  addCap('sub','<b>УЗИ у гинеколога</b> — быстро и безболезненно',420,26.4,31.2),
+  addCap('big','Хорошая новость: <b>миома лечится!</b>',270,31.4,37.2),
+  addCap('sub','Метод лечения подбирает врач — индивидуально',1290,34.6,37.2),
+  addCap('big','Мадина вовремя пришла к врачу и снова <b>полна сил!</b>',250,37.4,40.9),
+  addCap('big','Боль и обильные месячные — <b>НЕ норма</b>',250,41.0,46),
+  addCap('sub','Проверяйся у гинеколога <b>1 раз в год</b>',445,41.7,46),
+  addCap('tiny','Информация носит ознакомительный характер и не заменяет консультацию врача',712,42.6,46),
+];
+// "not cancer" pill + CTA pill
+function addPill(html,top,a,b,bg,sh){const d=document.createElement('div');d.className='pill';d.style.top=top+'px';d.innerHTML=`<div style="background:${bg};box-shadow:0 8px 0 ${sh},0 16px 30px rgba(0,0,0,.2)">${html}</div>`;layer.appendChild(d);return {el:d,a,b};}
+const pills=[
+  addPill('✅ Это НЕ рак',1430,16.9,20.2,'#2fb36d','#1e8a50'),
+  addPill('<span style="font-size:46px">📌 Сохрани · 💌 Отправь подруге</span>',600,42.4,46,'#e8336f','#b51f52'),
+];
+// cards
+function addCard(ic,html,left,top,w,a,b){const d=document.createElement('div');d.className='card';d.style.left=left+'px';d.style.top=top+'px';d.style.width=w+'px';d.innerHTML=`<div class="ic">${ic}</div><div>${html}</div>`;layer.appendChild(d);return {el:d,a,b};}
+const symptoms=[
+  ['🩸','Обильные и долгие месячные'],
+  ['⚡','Боль и тяжесть внизу живота'],
+  ['🚻','Частые походы в туалет'],
+  ['😴','Слабость, усталость, анемия'],
+  ['👗','Живот стал больше'],
+].map((s,i)=>addCard(s[0],s[1],425,545+i*150,620,6.0+i*1.05,12.3));
+const treats=[
+  ['👀','Наблюдение','если узлы маленькие и не беспокоят'],
+  ['💊','Лекарственная терапия','уменьшает симптомы'],
+  ['🩺','Малоинвазивные методы','эмболизация, удаление узлов'],
+  ['🏥','Операция','когда это действительно нужно'],
+].map((s,i)=>addCard(s[0],`${s[1]}<small>${s[2]}</small>`,90,520+i*182,860,32.0+i*.6,37.2));
+
+// hearts
+const hearts=[];
+const hc=['#ff5c8a','#ff8fab','#ffc94d','#ff7a95','#b388ff','#5fd3a0'];
+for(let i=0;i<46;i++){
+  const g=svgEl('g',{},$('hearts'));
+  const u=svgEl('use',{href:'#heart',fill:hc[i%hc.length]},g);
+  hearts.push({g,x:rnd()*1080,d:rnd()*7.5,sp:260+rnd()*220,rot:rnd()*360,rs:(rnd()-.5)*200,sc:.7+rnd()*1.1,sw:rnd()*6});
+}
+
+// ---------- render ----------
+function render(t){
+  // backgrounds
+  $('bgRoom').setAttribute('opacity',win(t,0,13.0,.4,.8));
+  $('bgInside').setAttribute('opacity',win(t,12.4,20.6,.6,.45));
+  $('bgStats').setAttribute('opacity',win(t,20.2,25.6));
+  $('bgClinic').setAttribute('opacity',win(t,25.2,31.6));
+  $('bgTreat').setAttribute('opacity',win(t,31.2,37.6));
+  $('bgFinal').setAttribute('opacity',win(t,37.2,99));
+  $('rays').setAttribute('transform',`rotate(${t*8},540,1100)`);
+
+  // ---- Madina ----
+  let vis=0,x=540,y=1560,s=.95,mood=-.5,pose=P.down,sweat=0,pain=0,bob=0,tilt=0,blk=blinkAt(t);
+  if(t<13.0){
+    vis=1;
+    const k=eio(seg(t,5.0,6.0)); x=lerp(540,270,k); s=lerp(.95,.85,k);
+    mood=lerp(-.35,-.85,seg(t,.5,3));
+    pose=mixP(P.down,P.rbelly,eio(seg(t,1.0,1.8)));
+    pose=mixP(pose,P.both,eio(seg(t,6.8,7.4)));
+    sweat=seg(t,2.6,3.2)*(1-seg(t,11.5,12));
+    pain=t>6.9?(.55+.45*Math.sin(t*9))*(1-seg(t,11.6,12.2)):0;
+    tilt=Math.sin(t*1.6)*2;
+    if(t>9.1&&t<10.1) blk=.1; // tired: eyes closed
+  } else if(t>25.2&&t<31.6){
+    vis=1;x=250;y=1580;s=.8;
+    mood=lerp(-.45,.7,eio(seg(t,29.0,30.0)));
+    pose=mixP(P.down,P.rbelly,1-eio(seg(t,28.6,29.4)));
+    tilt=Math.sin(t*1.4)*1.5;
+  } else if(t>37.2){
+    vis=1;x=540;y=1720;s=.78;mood=1;
+    const jt=t-37.4;
+    bob=jt>0?-Math.abs(Math.sin(jt*4.2))*70*(t<41?1:.45):0;
+    pose=mixP(P.up,P.wave,eio(seg(t,40.6,41.2)));
+    if(t>41.2){pose=[...pose];pose[3]=-25+Math.sin(t*9)*28;}
+    tilt=Math.sin(t*4.2)*3;
+  }
+  const mVis= t<13.0 ? 1 : win(t,25.2,31.6)*(t<37?1:0) + (t>37?win(t,37.2,99):0);
+  $('madinaWrap').setAttribute('transform',`translate(${x},${y+bob}) scale(${s}) rotate(${tilt},0,-400)`);
+  $('madinaWrap').setAttribute('opacity',vis?mVis:0);
+  setFace('M',mood,blk);setArms('M',pose);
+  $('M-sw').setAttribute('opacity',sweat);
+  $('M-pain').setAttribute('opacity',pain);
+  // zoom into belly
+  const z=t<13.5?eio(seg(t,11.9,13.0)):0;
+  const px=270,py=1560-.85*420;
+  $('madinaZoom').setAttribute('transform',`translate(${px},${py}) scale(${1+z*5}) translate(${-px},${-py})`);
+  $('madinaZoom').setAttribute('opacity',t<13.5?1-seg(t,12.4,13.0):1);
+
+  // ---- Doctor ----
+  const dv=win(t,25.6,31.6);
+  const dIn=eout(seg(t,25.4,26.4));
+  $('doctorWrap').setAttribute('opacity',dv);
+  $('doctorWrap').setAttribute('transform',`translate(${lerp(1150,830,dIn)},1580) scale(.8)`);
+  setFace('D',.55,blinkAt(t,1.2));
+  setArms('D',mixP(P.down,P.point,eio(seg(t,26.6,27.4))));
+
+  // ---- Uterus ----
+  const uv=win(t,12.6,20.4,.6,.4);
+  const us=lerp(.35,1.12,eout(seg(t,12.5,13.7)));
+  $('uterusWrap').setAttribute('opacity',uv);
+  $('uterus').setAttribute('transform',`translate(540,1010) scale(${us*(1+Math.sin(t*2.2)*.012)})`);
+  [['fib1',14.6],['fib2',15.2],['fib3',15.8]].forEach(([id,st],i)=>{
+    const k=back(seg(t,st,st+.7));
+    const wob=1+Math.sin(t*5+i)*.04*k;
+    $(id).querySelector('.fs').setAttribute('transform',`scale(${k*wob}) rotate(${Math.sin(t*3+i*2)*6})`);
+  });
+  $('fibLabel').setAttribute('opacity',win(t,16.4,20.4));
+
+  // ---- Stats ----
+  const nv=win(t,20.4,25.3);
+  $('bignum').style.opacity=nv;
+  $('bignum').style.transform=`scale(${.6+.4*back(seg(t,20.4,21.1))})`;
+  $('numv').textContent=Math.round(70*eout(seg(t,20.6,22.0)));
+  women.forEach((w,i)=>{
+    const k=back(seg(t,21.0+i*.09,21.5+i*.09));
+    w.setAttribute('transform',`scale(${k})`);
+    const pink=i<7 && t>22.0+i*.12;
+    w.setAttribute('fill',pink?'#e8336f':'#d9c3cc');
+  });
+  $('womenRow').setAttribute('opacity',nv);
+
+  // ---- Clinic monitor ----
+  $('monitor').setAttribute('opacity',eout(seg(t,25.5,26.2)));
+  const sa=Math.sin((t-26)*1.6)*30;
+  $('scanLine').setAttribute('transform',`rotate(${sa},540,770)`);
+  $('usNode').setAttribute('opacity',seg(t,27.4,28.0)*(.85+.15*Math.sin(t*6)));
+  $('usLabel').setAttribute('opacity',seg(t,27.9,28.4));
+
+  // ---- Captions ----
+  for(const c of caps){
+    const o=win(t,c.a,c.b,.4,.35);const k=eout(seg(t,c.a,c.a+.45));
+    c.el.style.opacity=o;c.el.style.transform=`translateY(${(1-k)*50}px) scale(${.92+.08*k})`;
+  }
+  for(const c of pills){
+    const o=win(t,c.a,c.b,.3,.35);const k=back(seg(t,c.a,c.a+.5));
+    c.el.style.opacity=o;c.el.style.transform=`scale(${.4+.6*k}) rotate(${(1-clamp(k))*-6}deg)`;
+  }
+  for(const c of [...symptoms,...treats]){
+    const o=win(t,c.a,c.b,.3,.35);const k=back(seg(t,c.a,c.a+.55));
+    c.el.style.opacity=o;c.el.style.transform=`translateX(${(1-clamp(k))*160}px) scale(${.7+.3*k})`;
+  }
+
+  // ---- Hearts ----
+  for(const h of hearts){
+    const lt=t-37.6-h.d;
+    if(lt<0||t<37.6){h.g.setAttribute('opacity',0);continue;}
+    const yy=-60+lt*h.sp, xx=h.x+Math.sin(lt*2+h.sw)*40;
+    h.g.setAttribute('opacity',yy<2000?1:0);
+    h.g.setAttribute('transform',`translate(${xx},${yy}) rotate(${h.rot+lt*h.rs}) scale(${h.sc})`);
+  }
+}
+window.render=render;
+window.DURATION=46;
+render(0);
+</script>
+</body></html>
