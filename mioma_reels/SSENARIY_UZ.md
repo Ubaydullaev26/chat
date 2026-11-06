@@ -1,7 +1,7 @@
 # Reels uchun multfilm: «Madina va mioma» (oʻzbek tilida, lotin yozuvi)
 
-**Format:** vertikal video 9:16 (1080×1920), ovoz bilan 56 soniya
-**Ovoz:** ayol ovozi dilnavoz (Silero TTS v4, oʻzbek tili)
+**Format:** vertikal video 9:16 (1080×1920), ovoz bilan 58 soniya
+**Ovoz:** ayol ovozi Madina (Microsoft neyron ovozi uz-UZ-MadinaNeural)
 **Fayllar:**
 - `reels_mioma_uz_ovoz.mp4` — ovoz + musiqa + effektlar (asosiy variant);
 - `reels_mioma_uz_faqat_ovoz.mp4` — faqat ovoz, musiqani Instagram’da qoʻshish mumkin;
@@ -48,7 +48,7 @@ Oxirgi kadrda: *«Maʼlumot tanishish uchun berilgan va shifokor maslahatini alm
 ## Qayta yigʻish
 
 ```bash
-LANG_CODE=uz python3 voice.py silero v4_uz.pt dilnavoz      # voice_uz.wav + timeline_uz.json
+LANG_CODE=uz python3 voice.py edge uz-UZ-MadinaNeural      # voice_uz.wav + timeline_uz.json (pip install edge-tts)
 node render.js 30 timeline_uz.json video_uz_silent.mp4 uz   # video
 python3 music.py timeline_uz.json voice_uz.wav mix_uz.wav   # musiqa + ovoz
 ```

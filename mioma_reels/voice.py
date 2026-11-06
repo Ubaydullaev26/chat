@@ -2,6 +2,8 @@
 
 Запуск:  python3 voice.py silero <v3_1_ru.pt> [голос=xenia]     — Silero (нужен torch), основной вариант
          LANG_CODE=uz python3 voice.py silero <v4_uz.pt> dilnavoz — узбекская версия (файлы с суффиксом _uz)
+         LANG_CODE=uz python3 voice.py edge uz-UZ-MadinaNeural [темп=+0%] — нейроголос Microsoft (pip install edge-tts,
+                                                                  нужен доступ к speech.platform.bing.com)
          python3 voice.py piper  <папка_модели_irina> [скорость=1.08] — Piper «Ирина»
 Модели:  Silero v3.1 ru (https://models.silero.ai/models/tts/ru/v3_1_ru.pt), v4 uz (https://models.silero.ai/models/tts/uz/v4_uz.pt),
          Piper: https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-piper-ru_RU-irina-medium.tar.bz2
@@ -65,6 +67,22 @@ if ENGINE == "silero":
             audio = model.apply_tts(ssml_text=f'<speak><prosody rate="{rate}">{text}</prosody></speak>',
                                     speaker=speaker, sample_rate=48000)
         return audio.numpy().astype(np.float64), 48000
+elif ENGINE == "edge":
+    import asyncio, subprocess, edge_tts
+    rate = OPT or "+0%"
+    def synth(text):
+        text = re.sub(r"(?<=[OoGg])'", "‘", text)  # oʻ / gʻ в типографском виде
+        async def go():
+            c = edge_tts.Communicate(text, MODEL, rate=rate, proxy=os.environ.get("HTTPS_PROXY"))
+            data = b""
+            async for ch in c.stream():
+                if ch["type"] == "audio":
+                    data += ch["data"]
+            return data
+        mp3 = asyncio.run(go())
+        pcm = subprocess.run(["ffmpeg", "-loglevel", "error", "-i", "pipe:0", "-f", "s16le", "-ac", "1", "-ar", "48000", "pipe:1"],
+                             input=mp3, capture_output=True, check=True).stdout
+        return np.frombuffer(pcm, "<i2").astype(np.float64) / 32768, 48000
 else:
     from piper import PiperVoice, SynthesisConfig
     voice = PiperVoice.load(f"{MODEL}/ru_RU-irina-medium.onnx", config_path=f"{MODEL}/ru_RU-irina-medium.onnx.json")
