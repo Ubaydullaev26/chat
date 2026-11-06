@@ -1,4 +1,4 @@
-// Покадровый рендер anim.html в MP4: node render.js [fps] [timeline.json] [out.mp4]
+// Покадровый рендер anim.html в MP4: node render.js [fps] [timeline.json] [out.mp4] [язык ru|uz]
 const {chromium}=require('playwright');
 const {spawn}=require('child_process');
 const path=require('path');
@@ -10,7 +10,7 @@ const path=require('path');
   const warp=T=>{if(!tl)return T;const r=tl.real,a=tl.anim;for(let k=0;k<r.length-1;k++)if(T<=r[k+1])return a[k]+(a[k+1]-a[k])*(T-r[k])/(r[k+1]-r[k]);return a[a.length-1];};
   const b=await chromium.launch();
   const p=await b.newPage({viewport:{width:1080,height:1920}});
-  await p.goto('file://'+path.join(__dirname,'anim.html'));
+  await p.goto('file://'+path.join(__dirname,'anim.html')+'?lang='+(process.argv[5]||'ru'));
   await p.evaluate(()=>document.fonts.ready);
   const dur=tl?tl.duration:await p.evaluate(()=>window.DURATION);
   const n=Math.round(dur*fps);

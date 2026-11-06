@@ -1,6 +1,6 @@
 """Фоновая музыка + звуковые эффекты для ролика.
 Запуск: python3 music.py            → music.wav (46 с, исходный тайминг)
-        python3 music.py timeline.json → music.wav и mix.wav (музыка приглушается под голос из voice.wav)"""
+        python3 music.py timeline.json [voice.wav] [mix.wav] → music.wav и mix.wav (музыка приглушается под голос)"""
 import json, sys, wave
 import numpy as np
 
@@ -131,7 +131,7 @@ write('music.wav', music)
 print('music.wav готов')
 
 if TL:
-    with wave.open('voice.wav') as w:
+    with wave.open(sys.argv[2] if len(sys.argv) > 2 else 'voice.wav') as w:
         v = np.frombuffer(w.readframes(w.getnframes()), '<i2') / 32768
     v = np.pad(v, (0, max(0, N - len(v))))[:N]
     # огибающая голоса → приглушение музыки до 30% во время речи
@@ -142,5 +142,6 @@ if TL:
     duck = 1 - 0.7 * np.clip(np.convolve(on, ker, 'same') * 1.5, 0, 1)
     out = music * 0.55 * duck[:, None] + v[:, None] * 0.9
     out /= np.max(np.abs(out)) / 0.95
-    write('mix.wav', out)
-    print('mix.wav готов')
+    MIX = sys.argv[3] if len(sys.argv) > 3 else 'mix.wav'
+    write(MIX, out)
+    print(MIX, 'готов')

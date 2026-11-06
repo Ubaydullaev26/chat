@@ -1,17 +1,20 @@
 """Закадровый голос + тайминг ролика под голос.
 
 Запуск:  python3 voice.py silero <v3_1_ru.pt> [голос=xenia]     — Silero (нужен torch), основной вариант
+         LANG_CODE=uz python3 voice.py silero <v4_uz.pt> dilnavoz — узбекская версия (файлы с суффиксом _uz)
          python3 voice.py piper  <папка_модели_irina> [скорость=1.08] — Piper «Ирина»
-Модели:  Silero v3.1 ru (https://models.silero.ai/models/tts/ru/v3_1_ru.pt),
+Модели:  Silero v3.1 ru (https://models.silero.ai/models/tts/ru/v3_1_ru.pt), v4 uz (https://models.silero.ai/models/tts/uz/v4_uz.pt),
          Piper: https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-piper-ru_RU-irina-medium.tar.bz2
 Выход:   voice.wav (голос на таймлайне), timeline.json (как растянуть анимацию), voice_timing.txt
 """
-import json, sys, wave
+import json, os, re, sys, wave
 import numpy as np
 
 ENGINE, MODEL = sys.argv[1], sys.argv[2]
 OPT = sys.argv[3] if len(sys.argv) > 3 else None
 SR = 44100
+LANG = os.environ.get('LANG_CODE', 'ru')
+SUF = '' if LANG == 'ru' else '_' + LANG
 
 # Сцены в «времени анимации» (anim.html): начало сцены, сдвиг фразы от начала сцены, текст
 SCENES = [
@@ -24,6 +27,18 @@ SCENES = [
     (37.3, 0.30, "Мадина вовремя пришла к врачу и снова полна сил."),
     (40.9, 0.10, "Боль и обильные месячные — не норма. Проверяйтесь у гинеколога раз в год. Сохраните видео и отправьте подруге!"),
 ]
+SCENES_UZ = [
+    (0.0,  0.35, "Bu Madina. U kuchli og'riq va mo'l hayzni normal holat deb o'ylardi."),
+    (5.0,  0.40, "Ammo belgilar o'tib ketmadi: mo'l hayz, qorin pastidagi og'riq, tez-tez hojatxonaga borish, charchoq."),
+    (12.0, 1.10, "Sababi, bachadon miomasi. Bu bachadon mushagida o'sgan xavfsiz tugun. Va bu saraton emas!"),
+    (20.3, 0.20, "Mioma juda keng tarqalgan: ayollarning yetmish foizigacha ellik yoshgacha unga duch keladi."),
+    (25.3, 0.30, "Qanday aniq bilish mumkin? Ginekolog ultratovush tekshiruvini o'tkazadi. Bu tez va og'riqsiz."),
+    (31.3, 0.20, "Yaxshi xabar: mioma davolanadi! Davolash usulini shifokor individual tanlaydi."),
+    (37.3, 0.30, "Madina o'z vaqtida shifokorga murojaat qildi va yana kuch-g'ayratga to'la."),
+    (40.9, 0.10, "Og'riq va mo'l hayz, normal emas. Yiliga bir marta ginekolog ko'rigidan o'ting. Videoni saqlang va dugonangizga yuboring!"),
+]
+if LANG == 'uz':
+    SCENES = SCENES_UZ
 ANIM_END = 46.0
 GAP = 0.45      # пауза после фразы перед следующей сценой
 TAIL = 1.6      # хвост после последней фразы
@@ -37,9 +52,18 @@ if ENGINE == "silero":
     model = torch.package.PackageImporter(MODEL).load_pickle("tts_models", "model")
     speaker = OPT or "xenia"
     def synth(text):
-        for a, b in SILERO_FIX:
-            text = text.replace(a, b)
-        audio = model.apply_tts(text=text, speaker=speaker, sample_rate=48000, put_accent=True, put_yo=True)
+        if LANG == 'ru':
+            for a, b in SILERO_FIX:
+                text = text.replace(a, b)
+        else:  # узбекская модель: строчная латиница и апостроф
+            text = re.sub(r"[ʻʼ‘’`]", "'", text.lower()).replace('—', ',')
+            text = re.sub(r"[^a-z'!,\-.:;? ]", "", text)
+        if LANG == 'ru':
+            audio = model.apply_tts(text=text, speaker=speaker, sample_rate=48000, put_accent=True, put_yo=True)
+        else:  # dilnavoz от природы говорит медленно — темп «fast» через SSML
+            rate = os.environ.get('RATE', 'fast')
+            audio = model.apply_tts(ssml_text=f'<speak><prosody rate="{rate}">{text}</prosody></speak>',
+                                    speaker=speaker, sample_rate=48000)
         return audio.numpy().astype(np.float64), 48000
 else:
     from piper import PiperVoice, SynthesisConfig
@@ -77,11 +101,11 @@ for k, x in enumerate(clips):
     log.append(f"{starts[k]:6.2f} – {starts[k] + len(x) / SR:6.2f} с  {SCENES[k][2]}")
 out = np.tanh(out * 1.2) / np.tanh(1.2)
 out *= 0.95 / np.max(np.abs(out))
-with wave.open("voice.wav", "wb") as w:
+with wave.open(f"voice{SUF}.wav", "wb") as w:
     w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR)
     w.writeframes((out * 32767).astype("<i2").tobytes())
 json.dump({"anim": anim_pts, "real": real_pts, "duration": total,
            "voice": [[starts[k], starts[k] + len(x) / SR] for k, x in enumerate(clips)]},
-          open("timeline.json", "w"), indent=1)
-open("voice_timing.txt", "w").write("\n".join(log) + f"\nИтого: {total:.2f} с\n")
+          open(f"timeline{SUF}.json", "w"), indent=1)
+open(f"voice_timing{SUF}.txt", "w").write("\n".join(log) + f"\nИтого: {total:.2f} с\n")
 print("\n".join(log)); print(f"Длительность ролика: {total:.2f} с")

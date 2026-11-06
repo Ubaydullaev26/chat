@@ -114,7 +114,7 @@ html,body{margin:0;padding:0;background:#fff;overflow:hidden}
       </g>
       <g id="usLabel" opacity="0">
         <line x1="500" y1="920" x2="455" y2="860" stroke="#ffeb3b" stroke-width="4"/>
-        <text x="380" y="852" font-family="Nunito" font-weight="900" font-size="30" fill="#ffeb3b">миома</text>
+        <text x="380" y="852" font-family="Nunito" font-weight="900" font-size="30" fill="#ffeb3b" id="usText">миома</text>
       </g>
     </g>
   </g>
@@ -174,8 +174,8 @@ html,body{margin:0;padding:0;background:#fff;overflow:hidden}
       <path d="M840,734 L786,764" stroke="#9c2948" stroke-width="5" stroke-dasharray="12 10" fill="none" stroke-linecap="round"/>
       <path d="M870,740 Q800,960 612,946" stroke="#9c2948" stroke-width="5" stroke-dasharray="12 10" fill="none" stroke-linecap="round"/>
       <path d="M910,740 Q760,1080 440,985" stroke="#9c2948" stroke-width="5" stroke-dasharray="12 10" fill="none" stroke-linecap="round"/>
-      <rect x="760" y="668" width="250" height="64" rx="32" fill="#9c2948"/>
-      <text x="885" y="712" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="36" fill="#fff">узлы миомы</text>
+      <rect id="fibRect" x="760" y="668" width="250" height="64" rx="32" fill="#9c2948"/>
+      <text x="885" y="712" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="36" fill="#fff" id="fibText">узлы миомы</text>
     </g>
   </g>
 
@@ -189,7 +189,7 @@ html,body{margin:0;padding:0;background:#fff;overflow:hidden}
 
 <!-- ===== HTML text layer ===== -->
 <div id="layer"></div>
-<div id="bignum"><span class="sm">до </span><span id="numv">0</span><span class="sm">%</span></div>
+<div id="bignum"></div>
 </div>
 
 <script>
@@ -302,48 +302,84 @@ const P={down:[8,4,-8,-4],rbelly:[8,4,-15,99],both:[15,-99,-15,99],up:[150,12,-1
 const mixP=(a,b,k)=>a.map((v,i)=>lerp(v,b[i],k));
 function blinkAt(t,offset=0){const ph=(t+offset)%3.3;return ph<.14?Math.abs(ph-.07)/.07:1;}
 
+// ---------- тексты (ru / uz) ----------
+const TXT={
+ ru:{
+  title:'Мадина и миома',
+  caps:['Это <b>Мадина</b>, ей 35 лет', 'Она думала, что сильная боль и обильные месячные — это «норма»…', 'Но симптомы <b>не проходили:</b>', 'Причина — <b>миома матки</b>', 'Доброкачественный узел из мышечной ткани матки', 'Миома встречается <b>очень часто</b>', 'женщин сталкиваются с ней к 50 годам', 'Часто протекает <b>без симптомов</b> — поэтому важно проверяться', 'Как узнать точно?', '<b>УЗИ у гинеколога</b> — быстро и безболезненно', 'Хорошая новость: <b>миома лечится!</b>', 'Метод лечения подбирает врач — индивидуально', 'Мадина вовремя пришла к врачу и снова <b>полна сил!</b>', 'Боль и обильные месячные — <b>НЕ норма</b>', 'Проверяйся у гинеколога <b>1 раз в год</b>', 'Информация носит ознакомительный характер и не заменяет консультацию врача'],
+  pills:['✅ Это НЕ рак','📌 Сохрани · 💌 Отправь подруге'],
+  symptoms:['Обильные и долгие месячные','Боль и тяжесть внизу живота','Частые походы в туалет','Слабость, усталость, анемия','Живот стал больше'],
+  treats:[['Наблюдение','если узлы маленькие и не беспокоят'],['Лекарственная терапия','уменьшает симптомы'],['Малоинвазивные методы','эмболизация, удаление узлов'],['Операция','когда это действительно нужно']],
+  fib:'узлы миомы', us:'миома', num:['<span class="sm">до </span>','<span class="sm">%</span>'],
+ },
+ uz:{
+  title:'Madina va mioma',
+  caps:[
+   'Bu — <b>Madina</b>, u 35 yoshda',
+   'U kuchli og‘riq va mo‘l hayzni «normal holat» deb o‘ylardi…',
+   'Ammo belgilar <b>o‘tib ketmadi:</b>',
+   'Sababi — <b>bachadon miomasi</b>',
+   'Bachadon mushak to‘qimasidan o‘sgan xavfsiz (yaxshi sifatli) tugun',
+   'Mioma <b>juda keng tarqalgan</b>',
+   'ayollar 50 yoshgacha miomaga duch keladi',
+   'Ko‘pincha <b>belgilarsiz</b> kechadi — shuning uchun tekshiruvdan o‘tish muhim',
+   'Qanday aniq bilish mumkin?',
+   '<b>Ginekologda UTT (UZI)</b> — tez va og‘riqsiz',
+   'Yaxshi xabar: <b>mioma davolanadi!</b>',
+   'Davolash usulini shifokor individual tanlaydi',
+   'Madina o‘z vaqtida shifokorga murojaat qildi va yana <b>kuch-g‘ayratga to‘la!</b>',
+   'Og‘riq va mo‘l hayz — <b>normal EMAS</b>',
+   'Yiliga <b>1 marta</b> ginekolog ko‘rigidan o‘ting',
+   'Ma’lumot tanishish uchun berilgan va shifokor maslahatini almashtirmaydi',
+  ],
+  pills:['✅ Bu saraton EMAS','📌 Saqlang · 💌 Dugonangizga yuboring'],
+  symptoms:['Mo‘l va uzoq davom etadigan hayz','Qorin pastida og‘riq va og‘irlik','Tez-tez hojatxonaga borish','Holsizlik, charchoq, kamqonlik','Qorin kattalashdi'],
+  treats:[['Kuzatuv','tugunlar kichik va bezovta qilmasa'],['Dori bilan davolash','belgilarni kamaytiradi'],['Kam invaziv usullar','embolizatsiya, tugunlarni olib tashlash'],['Operatsiya','haqiqatan zarur bo‘lganda']],
+  ctaSize:40,
+  tops:{4:470,9:470,14:470,p1:630,15:752},
+  fib:'mioma tugunlari', us:'mioma', num:['','<span class="sm">%</span><span class="sm" style="font-size:90px"> gacha</span>'],
+ }
+};
+const LANG=(new URLSearchParams(location.search).get('lang'))||'ru';
+const L=TXT[LANG]||TXT.ru;
+const TOP=(k,d)=>(L.tops&&L.tops[k]!=null)?L.tops[k]:d;
+document.title=L.title;
+$('bignum').innerHTML=L.num[0]+'<span id="numv">0</span>'+L.num[1];
+$('usText').textContent=L.us;
+$('fibText').textContent=L.fib;
+{const w=$('fibText').getComputedTextLength()+56;const r=$('fibRect');const cx=885;r.setAttribute('width',w);r.setAttribute('x',Math.min(cx-w/2,1060-w));$('fibText').setAttribute('x',parseFloat(r.getAttribute('x'))+w/2);}
+
 // ---------- HTML text layer ----------
 const layer=$('layer');
 function addCap(cls,html,top,a,b){const d=document.createElement('div');d.className='cap '+cls;d.style.top=top+'px';d.innerHTML='<div>'+html+'</div>';layer.appendChild(d);return {el:d,a,b};}
 const caps=[
-  addCap('big','Это <b>Мадина</b>, ей 35 лет',250,.3,5.0),
-  addCap('sub','Она думала, что сильная боль и обильные месячные — это «норма»…',430,1.5,5.0),
-  addCap('big','Но симптомы <b>не проходили:</b>',290,5.3,12.3),
-  addCap('big','Причина — <b>миома матки</b>',250,13.2,20.2),
-  addCap('sub','Доброкачественный узел из мышечной ткани матки',410,14.3,20.2),
-  addCap('sub','Миома встречается <b>очень часто</b>',330,20.4,25.2),
-  addCap('sub','женщин сталкиваются с ней к 50 годам',840,21.0,25.2),
-  addCap('sub','Часто протекает <b>без симптомов</b> — поэтому важно проверяться',1330,22.4,25.2),
-  addCap('big','Как узнать точно?',250,25.4,31.2),
-  addCap('sub','<b>УЗИ у гинеколога</b> — быстро и безболезненно',420,26.4,31.2),
-  addCap('big','Хорошая новость: <b>миома лечится!</b>',270,31.4,37.2),
-  addCap('sub','Метод лечения подбирает врач — индивидуально',1290,34.6,37.2),
-  addCap('big','Мадина вовремя пришла к врачу и снова <b>полна сил!</b>',250,37.4,40.9),
-  addCap('big','Боль и обильные месячные — <b>НЕ норма</b>',250,41.0,46),
-  addCap('sub','Проверяйся у гинеколога <b>1 раз в год</b>',445,41.7,46),
-  addCap('tiny','Информация носит ознакомительный характер и не заменяет консультацию врача',712,42.6,46),
+  addCap('big',L.caps[0],TOP(0,250),.3,5.0),
+  addCap('sub',L.caps[1],TOP(1,430),1.5,5.0),
+  addCap('big',L.caps[2],TOP(2,290),5.3,12.3),
+  addCap('big',L.caps[3],TOP(3,250),13.2,20.2),
+  addCap('sub',L.caps[4],TOP(4,410),14.3,20.2),
+  addCap('sub',L.caps[5],TOP(5,330),20.4,25.2),
+  addCap('sub',L.caps[6],TOP(6,840),21.0,25.2),
+  addCap('sub',L.caps[7],TOP(7,1330),22.4,25.2),
+  addCap('big',L.caps[8],TOP(8,250),25.4,31.2),
+  addCap('sub',L.caps[9],TOP(9,420),26.4,31.2),
+  addCap('big',L.caps[10],TOP(10,270),31.4,37.2),
+  addCap('sub',L.caps[11],TOP(11,1290),34.6,37.2),
+  addCap('big',L.caps[12],TOP(12,250),37.4,40.9),
+  addCap('big',L.caps[13],TOP(13,250),41.0,46),
+  addCap('sub',L.caps[14],TOP(14,445),41.7,46),
+  addCap('tiny',L.caps[15],TOP(15,712),42.6,46),
 ];
 // "not cancer" pill + CTA pill
 function addPill(html,top,a,b,bg,sh){const d=document.createElement('div');d.className='pill';d.style.top=top+'px';d.innerHTML=`<div style="background:${bg};box-shadow:0 8px 0 ${sh},0 16px 30px rgba(0,0,0,.2)">${html}</div>`;layer.appendChild(d);return {el:d,a,b};}
 const pills=[
-  addPill('✅ Это НЕ рак',1430,16.9,20.2,'#2fb36d','#1e8a50'),
-  addPill('<span style="font-size:46px">📌 Сохрани · 💌 Отправь подруге</span>',600,42.4,46,'#e8336f','#b51f52'),
+  addPill(L.pills[0],TOP('p0',1430),16.9,20.2,'#2fb36d','#1e8a50'),
+  addPill(`<span style="font-size:${L.ctaSize||46}px">${L.pills[1]}</span>`,TOP('p1',600),42.4,46,'#e8336f','#b51f52'),
 ];
 // cards
 function addCard(ic,html,left,top,w,a,b){const d=document.createElement('div');d.className='card';d.style.left=left+'px';d.style.top=top+'px';d.style.width=w+'px';d.innerHTML=`<div class="ic">${ic}</div><div>${html}</div>`;layer.appendChild(d);return {el:d,a,b};}
-const symptoms=[
-  ['🩸','Обильные и долгие месячные'],
-  ['⚡','Боль и тяжесть внизу живота'],
-  ['🚻','Частые походы в туалет'],
-  ['😴','Слабость, усталость, анемия'],
-  ['👗','Живот стал больше'],
-].map((s,i)=>addCard(s[0],s[1],425,545+i*150,620,6.0+i*1.05,12.3));
-const treats=[
-  ['👀','Наблюдение','если узлы маленькие и не беспокоят'],
-  ['💊','Лекарственная терапия','уменьшает симптомы'],
-  ['🩺','Малоинвазивные методы','эмболизация, удаление узлов'],
-  ['🏥','Операция','когда это действительно нужно'],
-].map((s,i)=>addCard(s[0],`${s[1]}<small>${s[2]}</small>`,90,520+i*182,860,32.0+i*.6,37.2));
+const symptoms=['🩸','⚡','🚻','😴','👗'].map((ic,i)=>[ic,L.symptoms[i]]).map((s,i)=>addCard(s[0],s[1],425,545+i*150,620,6.0+i*1.05,12.3));
+const treats=['👀','💊','🩺','🏥'].map((ic,i)=>[ic,...L.treats[i]]).map((s,i)=>addCard(s[0],`${s[1]}<small>${s[2]}</small>`,90,520+i*182,860,32.0+i*.6,37.2));
 
 // hearts
 const hearts=[];
