@@ -1,0 +1,5 @@
+node_modules/
+frames/
+*.wav
+video_silent.mp4
+render.log
