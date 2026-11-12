@@ -45,6 +45,42 @@ function gradientTex(c1, c2, c3) {
   const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; return t;
 }
 
+// ---------- тексты: ru / uz (выбор через ?lang=uz) ----------
+const TXT = {
+  ru: {
+    caps: ['«Миома. Нужна <b>операция</b>»…', 'Можно ли лечить <b>без разреза</b>?', 'Узлы миомы <b>питаются кровью</b>', 'через маточные артерии', '<b>ЭМА</b> — эмболизация маточных артерий', 'Тонкий катетер через прокол <b>на руке или бедре</b>', '✂️ Без разрезов · под местной анестезией', 'Микрочастицы <b>перекрывают сосуды</b>', 'которые питают узлы миомы', 'Узлы <b>уменьшаются</b>, симптомы уходят', 'Преимущества <b>ЭМА</b>', 'Подходит ли вам ЭМА — <b>решает врач</b>', 'после обследования: УЗИ или МРТ', 'Информация носит ознакомительный характер. Есть противопоказания, необходима консультация специалиста'],
+    pills: ['💗 Матка сохраняется', '📌 Сохрани · 💌 Отправь подруге'],
+    cards: ['Без разрезов и швов', 'Процедура — около часа', 'Выписка через 1–2 дня', 'Матка сохраняется', 'Помогает и при аденомиозе'],
+    paper: ['УЗИ', 'миома'],
+  },
+  uz: {
+    caps: [
+      '«Mioma. <b>Operatsiya</b> kerak»…',
+      '<b>Kesmasdan</b> davolash mumkinmi?',
+      'Mioma tugunlari <b>qon bilan oziqlanadi</b>',
+      'bachadon arteriyalari orqali',
+      '<b>EMA</b> — bachadon arteriyalari embolizatsiyasi',
+      'Ingichka kateter <b>qo‘l yoki sondagi</b> kichik teshik orqali kiritiladi',
+      '✂️ Kesiksiz · mahalliy og‘riqsizlantirish ostida',
+      'Mikrozarrachalar <b>tomirlarni berkitadi</b>',
+      'mioma tugunlarini oziqlantiradigan',
+      'Tugunlar <b>kichrayadi</b>, belgilar yo‘qoladi',
+      '<b>EMA</b> afzalliklari',
+      'EMA sizga mos keladimi — <b>shifokor hal qiladi</b>',
+      'tekshiruvdan keyin: UTT yoki MRT',
+      'Ma’lumot tanishish uchun berilgan. Qarshi ko‘rsatmalar mavjud, mutaxassis maslahati zarur',
+    ],
+    tops: { 1: 470, 3: 470, 5: 470, 8: 470 },
+    pills: ['💗 Bachadon saqlanadi', '📌 Saqlang · 💌 Dugonangizga yuboring'],
+    ctaSize: 40,
+    cards: ['Kesiksiz va choksiz', 'Muolaja — taxminan 1 soat', '1–2 kunda uyga qaytasiz', 'Bachadon saqlanadi', 'Adenomiozda ham yordam beradi'],
+    paper: ['UTT', 'mioma'],
+  },
+};
+const LANG = new URLSearchParams(location.search).get('lang') || 'ru';
+const L = TXT[LANG] || TXT.ru;
+const TOP = (i, d) => (L.tops && L.tops[i] != null) ? L.tops[i] : d;
+
 // ================= Мадина =================
 function makeGirl() {
   const skin = mat('#f6c9a8', .6), hair = mat('#3a2320', .5), dress = mat('#ff7a95', .55), dark = mat('#2b1b17', .3);
@@ -93,9 +129,9 @@ function makeGirl() {
   const paperTex = new THREE.CanvasTexture(cv); paperTex.colorSpace = THREE.SRGBColorSpace;
   const drawPaper = () => {
     const c = cv.getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, 256, 330);
-    c.fillStyle = '#3a1f2b'; c.font = '900 44px Nunito'; c.fillText('УЗИ', 24, 60);
+    c.fillStyle = '#3a1f2b'; c.font = '900 44px Nunito'; c.fillText(L.paper[0], 24, 60);
     c.fillStyle = '#cfd8dc'; for (let i = 0; i < 5; i++) c.fillRect(24, 95 + i * 30, 200 - (i % 2) * 50, 12);
-    c.fillStyle = '#e8336f'; c.font = '900 40px Nunito'; c.fillText('миома', 24, 290); paperTex.needsUpdate = true;
+    c.fillStyle = '#e8336f'; c.font = '900 40px Nunito'; c.fillText(L.paper[1], 24, 290); paperTex.needsUpdate = true;
   };
   const paper = mesh(new THREE.BoxGeometry(.42, .54, .01), [mat('#fff'), mat('#fff'), mat('#fff'), mat('#fff'), new THREE.MeshStandardMaterial({ map: paperTex, roughness: .7 }), mat('#fff')], body, [0, .98, .4]);
   paper.rotation.x = -.35;
@@ -272,27 +308,27 @@ const bgFinal = gradientTex('#ffc7da', '#ffe7d6', '#ffbcd2');
 const layer = $('layer');
 const mk = (cls, html, top) => { const d = document.createElement('div'); d.className = cls; d.style.top = top + 'px'; d.innerHTML = '<div>' + html + '</div>'; layer.appendChild(d); return d; };
 const CAPS = [
-  ['cap big', '«Миома. Нужна <b>операция</b>»…', 250, .4, 5.5],
-  ['cap sub', 'Можно ли лечить <b>без разреза</b>?', 440, 1.8, 5.5],
-  ['cap big', 'Узлы миомы <b>питаются кровью</b>', 250, 5.9, 11.5],
-  ['cap sub', 'через маточные артерии', 440, 6.8, 11.5],
-  ['cap big', '<b>ЭМА</b> — эмболизация маточных артерий', 250, 11.9, 18.5],
-  ['cap sub', 'Тонкий катетер через прокол <b>на руке или бедре</b>', 450, 13.2, 18.5],
-  ['cap sub', '✂️ Без разрезов · под местной анестезией', 1360, 14.8, 18.5],
-  ['cap big', 'Микрочастицы <b>перекрывают сосуды</b>', 250, 18.9, 27.5],
-  ['cap sub', 'которые питают узлы миомы', 450, 20.2, 27.5],
-  ['cap big', 'Узлы <b>уменьшаются</b>, симптомы уходят', 250, 27.9, 35.0],
-  ['cap big', 'Преимущества <b>ЭМА</b>', 250, 35.4, 45.0],
-  ['cap big', 'Подходит ли вам ЭМА — <b>решает врач</b>', 250, 45.4, 56],
-  ['cap sub', 'после обследования: УЗИ или МРТ', 450, 46.4, 56],
-  ['cap tiny', 'Информация носит ознакомительный характер. Есть противопоказания, необходима консультация специалиста', 690, 50.0, 56],
+  ['cap big', L.caps[0], TOP(0, 250), .4, 5.5],
+  ['cap sub', L.caps[1], TOP(1, 440), 1.8, 5.5],
+  ['cap big', L.caps[2], TOP(2, 250), 5.9, 11.5],
+  ['cap sub', L.caps[3], TOP(3, 440), 6.8, 11.5],
+  ['cap big', L.caps[4], TOP(4, 250), 11.9, 18.5],
+  ['cap sub', L.caps[5], TOP(5, 450), 13.2, 18.5],
+  ['cap sub', L.caps[6], TOP(6, 1360), 14.8, 18.5],
+  ['cap big', L.caps[7], TOP(7, 250), 18.9, 27.5],
+  ['cap sub', L.caps[8], TOP(8, 450), 20.2, 27.5],
+  ['cap big', L.caps[9], TOP(9, 250), 27.9, 35.0],
+  ['cap big', L.caps[10], TOP(10, 250), 35.4, 45.0],
+  ['cap big', L.caps[11], TOP(11, 250), 45.4, 56],
+  ['cap sub', L.caps[12], TOP(12, 450), 46.4, 56],
+  ['cap tiny', L.caps[13], TOP(13, 690), 50.0, 56],
 ].map(([c, h, top, a, b]) => ({ el: mk(c, h, top), a, b, k: 'cap' }));
 const pill = (html, top, a, b, bg, sh, fs = 54) => { const d = mk('pill', html, top); d.firstChild.style.cssText = `background:${bg};box-shadow:0 8px 0 ${sh},0 16px 30px rgba(0,0,0,.25);font-size:${fs}px`; return { el: d, a, b, k: 'pill' }; };
 const PILLS = [
-  pill('💗 Матка сохраняется', 1380, 30.6, 35.0, '#2fb36d', '#1e8a50'),
-  pill('📌 Сохрани · 💌 Отправь подруге', 575, 49.2, 56, '#e8336f', '#b51f52', 46),
+  pill(L.pills[0], 1380, 30.6, 35.0, '#2fb36d', '#1e8a50'),
+  pill(L.pills[1], (L.pillTops && L.pillTops[1]) || 575, 49.2, 56, '#e8336f', '#b51f52', L.ctaSize || 46),
 ];
-const CARDS = [['✂️', 'Без разрезов и швов'], ['⏱️', 'Процедура — около часа'], ['🏠', 'Выписка через 1–2 дня'], ['💗', 'Матка сохраняется'], ['✅', 'Помогает и при аденомиозе']]
+const CARDS = ['✂️', '⏱️', '🏠', '💗', '✅'].map((ic, i) => [ic, L.cards[i]])
   .map(([ic, txt], i) => { const d = document.createElement('div'); d.className = 'card'; d.style.left = '60px'; d.style.top = (470 + i * 152) + 'px'; d.style.width = '660px';
     d.innerHTML = `<div class="ic">${ic}</div><div>${txt}</div>`; layer.appendChild(d); return { el: d, a: 36.2 + i * 1.3, b: 45.0, k: 'card' }; });
 

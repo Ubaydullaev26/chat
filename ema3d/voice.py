@@ -1,6 +1,7 @@
 """Озвучка ролика «Мадина и ЭМА» + тайминг анимации под голос.
 
 Запуск:  python3 voice.py [голос=ru-RU-SvetlanaNeural] [темп=+0%]
+         LANG_CODE=uz python3 voice.py uz-UZ-MadinaNeural +0%   — узбекская версия (файлы с суффиксом _uz)
 Нужно:   pip install edge-tts numpy, ffmpeg, доступ к speech.platform.bing.com
 Выход:   voice.wav, timeline.json (как растянуть анимацию), voice_timing.txt
 """
@@ -21,6 +22,19 @@ SCENES = [
     (35.0, 0.45, "Процедура длится около часа, а выписка — уже через день-два. Эма помогает и при аденомиозе."),
     (45.0, 0.45, "Подходит ли вам Эма, решит врач после обследования. Сохраните видео и отправьте подруге!"),
 ]
+SCENES_UZ = [
+    (0.0,  0.45, "Madinaga mioma tashxisi qo‘yildi. U operatsiyadan juda qo‘rqardi va bachadonidan ayrilishni xohlamasdi."),
+    (5.5,  0.45, "Mioma tugunlari bachadon arteriyalari orqali qon olgani uchun o‘sadi."),
+    (11.5, 0.45, "Ammo kesiksiz usul bor — bachadon arteriyalari embolizatsiyasi, ya’ni EMA. Shifokor qo‘l yoki sondagi kichik teshik orqali ingichka kateter kiritadi."),
+    (18.5, 0.45, "Kateter orqali mikrozarrachalar yuboriladi. Ular faqat tugunlarni oziqlantiradigan tomirlarni berkitadi."),
+    (27.5, 0.45, "Oziqlanmagan tugunlar asta-sekin kichrayadi, bachadon esa saqlanib qoladi."),
+    (35.0, 0.45, "Muolaja taxminan bir soat davom etadi, bir-ikki kundan keyin esa uyga qaytasiz. EMA adenomiozda ham yordam beradi."),
+    (45.0, 0.45, "EMA sizga mos keladimi yoki yo‘qmi, buni tekshiruvdan so‘ng shifokor hal qiladi. Videoni saqlang va dugonangizga yuboring!"),
+]
+LANG = os.environ.get("LANG_CODE", "ru")
+SUF = "" if LANG == "ru" else "_" + LANG
+if LANG == "uz":
+    SCENES = SCENES_UZ
 ANIM_END, GAP, TAIL = 56.0, 0.5, 1.8
 
 async def tts_once(text):
@@ -59,10 +73,10 @@ out = np.zeros(int(SR * r) + 1)
 for k, x in enumerate(clips):
     i0 = int(starts[k] * SR); out[i0:i0 + len(x)] += x[:len(out) - i0]
 out = np.tanh(out * 1.2) / np.tanh(1.2); out *= .95 / np.max(np.abs(out))
-with wave.open("voice.wav", "wb") as w:
+with wave.open(f"voice{SUF}.wav", "wb") as w:
     w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR); w.writeframes((out * 32767).astype("<i2").tobytes())
 json.dump({"anim": anim, "real": real, "duration": r, "voice": [[s, s + len(x) / SR] for s, x in zip(starts, clips)]},
-          open("timeline.json", "w"), indent=1)
+          open(f"timeline{SUF}.json", "w"), indent=1)
 log = [f"{s:6.2f} – {s + len(x) / SR:6.2f} с  {SCENES[k][2]}" for k, (s, x) in enumerate(zip(starts, clips))]
-open("voice_timing.txt", "w").write("\n".join(log) + f"\nИтого: {r:.2f} с\n")
+open(f"voice_timing{SUF}.txt", "w").write("\n".join(log) + f"\nИтого: {r:.2f} с\n")
 print("\n".join(log)); print(f"Длительность ролика: {r:.2f} с")

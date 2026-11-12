@@ -1,4 +1,4 @@
-// Покадровый рендер 3D-ролика в MP4:  node render.js [fps] [timeline.json] [out.mp4]
+// Покадровый рендер 3D-ролика в MP4:  node render.js [fps] [timeline.json] [out.mp4] [язык ru|uz]
 // Сам поднимает локальный http-сервер (ES-модули three.js не грузятся с file://).
 const { chromium } = require('playwright');
 const { spawn } = require('child_process');
@@ -16,7 +16,7 @@ const fs = require('fs'), path = require('path');
   const b = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
   p.on('pageerror', e => console.log('ERR', e.message));
-  await p.goto(`http://127.0.0.1:${port}/index.html`);
+  await p.goto(`http://127.0.0.1:${port}/index.html?lang=${process.argv[5] || 'ru'}`);
   await p.waitForFunction(() => window.ready, null, { timeout: 120000 });
   const dur = tl ? tl.duration : await p.evaluate(() => window.DURATION);
   const n = Math.round(dur * fps);
