@@ -12,7 +12,8 @@ const path = require('path');
   p.on('pageerror', e => console.log('ERR', e.message));
   p.on('console', m => { if (m.type() === 'error' || m.type() === 'warning') console.log('console', m.text()); });
   const t0 = Date.now();
-  await p.goto(`http://127.0.0.1:${port}/index.html?ep=${ep}&style=${style}${extra ? '&' + extra : ''}`);
+  const url = ep.endsWith('.html') ? `http://127.0.0.1:${port}/${ep}?style=${style}` : `http://127.0.0.1:${port}/index.html?ep=${ep}&style=${style}`;
+  await p.goto(url + (extra ? '&' + extra : ''));
   await p.waitForFunction(() => window.scene3d && window.scene3d.ready, null, { timeout: 300000 });
   console.log('сцена собрана за', ((Date.now() - t0) / 1000).toFixed(1), 'с');
   for (const t of ts.split(',').map(Number)) {
