@@ -116,7 +116,10 @@ function update(t) {
   const herbs = smooth(L[6].start - 0.2, L[6].start + 0.3, t) * (1 - smooth(L[7].start + 0.5, L[7].start + 1.0, t));
   const dk = { ...D };
   if (!dk.gestR || herbs > 0.5) { dk.gestR = 'palms'; dk.gestRK = 0.35 + 0.65 * herbs; }
-  dil.pose({ ...dk, crouch: 0, shrink: Math.min(dk.shrink ?? 0, 0.3), mouth: mouthOf('dil', t), blink: blink(t, 0.4), t,
+  // в испуге зубы стиснуты и рот не открывается под голос: пока она говорит, подмешиваем удивление
+  const md = mouthOf('dil', t);
+  if (dk.emo === 'scared' && !dk.emo2 && L.some((l) => l.who === 'dil' && t >= l.start - 0.1 && t < l.end)) { dk.emo2 = 'wow'; dk.emo2K = 0.6; }
+  dil.pose({ ...dk, crouch: 0, shrink: Math.min(dk.shrink ?? 0, 0.3), mouth: md, blink: blink(t, 0.4), t,
     headYaw: (dk.headYaw ?? 0) + 0.12 * Math.sin(t * 0.7) });
   const mk = { ...M };
   if (!mk.gestL) { mk.gestL = 'palms'; mk.gestLK = 0.85; }
