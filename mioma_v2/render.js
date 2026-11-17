@@ -1,15 +1,16 @@
-// Рендер ролика движком v2 в несколько потоков: node render.js <style> <spp> <workers> [from_s] [to_s]
+// Рендер ролика движком v2 в несколько потоков: node render.js <style> <spp> <workers> [from_s] [to_s] [шаг кадров: 2 — «на двойках»]
 // Кадры — frames/00001.jpg … (кадр n ↔ t = (n−1)/30). Уже снятые кадры пропускаются: рендер можно продолжать.
 const { chromium } = require('playwright');
 const { spawn } = require('child_process');
 const fs = require('fs'), path = require('path');
-const [style = 'toon', spp = '4', workers = '2', from = '0', to] = process.argv.slice(2);
+const [style = 'toon', spp = '4', workers = '2', from = '0', to, step = '1'] = process.argv.slice(2);
 const FPS = 30, dir = path.join(__dirname, 'frames');
 fs.mkdirSync(dir, { recursive: true });
 const cues = JSON.parse(fs.readFileSync(path.join(__dirname, 'three/v2/mm/cues.json')));
 const n0 = Math.round(+from * FPS), n1 = Math.ceil((to ? +to : cues.end) * FPS);
 const todo = [];
-for (let n = n0; n < n1; n++) { const f = path.join(dir, String(n + 1).padStart(5, '0') + '.jpg'); if (!fs.existsSync(f)) todo.push([n, f]); }
+for (let n = n0; n < n1; n++) {
+  if (n % +step) continue; const f = path.join(dir, String(n + 1).padStart(5, '0') + '.jpg'); if (!fs.existsSync(f)) todo.push([n, f]); }
 console.log(`кадров к съёмке: ${todo.length}`);
 (async () => {
   const port = 8600 + Math.floor(Math.random() * 300);
