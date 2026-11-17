@@ -136,8 +136,10 @@ if TL:
     on = np.zeros(N)
     for a, b in TL["voice"]:
         on[int(a * SR):int(b * SR)] = 1
-    k = int(0.25 * SR); ker = np.ones(k) / k
-    duck = 1 - 0.7 * np.clip(np.convolve(on, ker, 'same') * 1.5, 0, 1)
+    k = int(0.25 * SR)  # скользящее среднее через накопленную сумму: быстро даже на минутной дорожке
+    cs = np.concatenate([[0], np.cumsum(on)]); i = np.arange(N)
+    sm = (cs[np.minimum(N, i + k // 2)] - cs[np.maximum(0, i - k // 2)]) / k
+    duck = 1 - 0.7 * np.clip(sm * 1.5, 0, 1)
     out = music * 0.55 * duck[:, None] + v[:, None] * 0.9
     out /= np.max(np.abs(out)) / 0.95
     MIX = sys.argv[3] if len(sys.argv) > 3 else 'mix.wav'
