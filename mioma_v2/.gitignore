@@ -1,0 +1,10 @@
+# движок друга (cartoon-engine-v2) не коммитим — только нашу сцену
+three/*
+!three/v2/
+three/v2/*
+!three/v2/mm/
+out/
+frames/
+*.wav
+video_silent*.mp4
+*.log
