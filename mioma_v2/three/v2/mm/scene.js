@@ -14,9 +14,26 @@ export const DILNOZA = { ...MOM, name: 'dilnoza',
   atlas: ['#2f8f7a', '#f2c94c', '#7a3f9f', '#f4efe4', '#1f4f6f'],
   look: { ...MOM.look, eyeRX: 10, eyeRY: 15.5, browUp: 5, mouthW: 27 } };
 
-const MYTH = ['', '«Миома — это рак»', '«Матку обязательно удалят»', '«С миомой не забеременеть»', '«Травы растворят миому»', '«Не болит — значит, не опасно»'];
-const TRUTH = ['', 'Миома — доброкачественный узел, не рак', 'Есть методы, сохраняющие матку: ЭМА, удаление узлов', 'Многие беременеют и рожают — решает врач', 'Травы не помогают, а узлы растут', 'Часто без симптомов — УЗИ раз в год'];
-const NAME = { dil: ['Дилноза', '#7fe0c8'], mad: ['Мадина', '#ffb3c8'] };
+const TXT = {
+  ru: {
+    title: '5 мифов о <b>миоме</b>', mythLab: 'МИФ', truthLab: 'ПРАВДА',
+    myth: ['', '«Миома — это рак»', '«Матку обязательно удалят»', '«С миомой не забеременеть»', '«Травы растворят миому»', '«Не болит — значит, не опасно»'],
+    truth: ['', 'Миома — доброкачественный узел, не рак', 'Есть методы, сохраняющие матку: ЭМА, удаление узлов', 'Многие беременеют и рожают — решает врач', 'Травы не помогают, а узлы растут', 'Часто без симптомов — УЗИ раз в год'],
+    cta: '📌 Сохрани · 💌 Отправь подруге', tiny: 'Информация носит ознакомительный характер. Необходима консультация специалиста',
+    names: { dil: 'Дилноза', mad: 'Мадина' },
+  },
+  uz: {
+    title: 'Mioma haqida <b>5 ta afsona</b>', mythLab: 'AFSONA', truthLab: 'HAQIQAT',
+    myth: ['', '«Mioma — bu saraton»', '«Bachadonni albatta olib tashlashadi»', '«Mioma bilan homilador bo‘lib bo‘lmaydi»', '«O‘tlar miomani eritadi»', '«Og‘rimasa — xavfli emas»'],
+    truth: ['', 'Mioma — xavfsiz tugun, saraton emas', 'Bachadonni saqlaydigan usullar bor: EMA, tugunlarni olib tashlash', 'Ko‘pchilik homilador bo‘lib, tug‘adi — shifokor hal qiladi', 'O‘tlar yordam bermaydi, tugunlar esa o‘sadi', 'Ko‘pincha belgilarsiz — yiliga bir marta UTT'],
+    cta: '📌 Saqlang · 💌 Dugonangizga yuboring', tiny: 'Ma’lumot tanishish uchun berilgan. Mutaxassis maslahati zarur',
+    names: { dil: 'Dilnoza', mad: 'Madina' },
+  },
+};
+const LANG = new URLSearchParams(location.search).get('lang') || 'ru';
+const T = TXT[LANG] || TXT.ru;
+const MYTH = T.myth, TRUTH = T.truth;
+const NAME = { dil: [T.names.dil, '#7fe0c8'], mad: [T.names.mad, '#ffb3c8'] };
 
 let eng, world, mad, dil, L, DUR, SHOTS, ACT_D, ACT_M, ov = {};
 const P_MAD = [0.36, 0, 1.75], P_DIL = [-0.36, 0, 1.62];
@@ -57,7 +74,7 @@ function mkOv(cls, html, top, layer) {
 }
 
 export async function init(canvas, layer) {
-  const J = await (await fetch('./lines.json')).json();
+  const J = await (await fetch(LANG === 'ru' ? './lines.json' : `./lines_${LANG}.json`)).json();
   L = J.lines; DUR = J.duration;
   eng = await createEngine(canvas);
   eng.look({ sunDir: W.SUN, sun: '#fff0d8', sunI: 3.0, sky: '#c2dcff', skyI: 1.2, ground: '#b48a62' });
@@ -74,15 +91,15 @@ export async function init(canvas, layer) {
   [ACT_D, ACT_M] = buildActs();
   // оверлей
   if (layer) {
-    ov.title = mkOv('title', '5 мифов о <b>миоме</b>', 300, layer);
+    ov.title = mkOv('title', T.title, 300, layer);
     ov.myth = []; ov.truth = [];
     for (let k = 1; k <= 5; k++) {
-      ov.myth[k] = mkOv('card myth', `<div class="lab">МИФ №${k}</div><div class="txt">${MYTH[k]}</div><div class="stamp">❌</div>`, 300, layer);
-      ov.truth[k] = mkOv('card truth', `<div class="lab">ПРАВДА</div><div class="txt">${TRUTH[k]}</div><div class="stamp">✅</div>`, 300, layer);
+      ov.myth[k] = mkOv('card myth', `<div class="lab">${T.mythLab} №${k}</div><div class="txt">${MYTH[k]}</div><div class="stamp">❌</div>`, 300, layer);
+      ov.truth[k] = mkOv('card truth', `<div class="lab">${T.truthLab}</div><div class="txt">${TRUTH[k]}</div><div class="stamp">✅</div>`, 300, layer);
     }
     ov.sub = mkOv('sub', '', 1450, layer);
-    ov.cta = mkOv('cta', '📌 Сохрани · 💌 Отправь подруге', 300, layer);
-    ov.tiny = mkOv('tiny', 'Информация носит ознакомительный характер. Необходима консультация специалиста', 410, layer);
+    ov.cta = mkOv('cta', T.cta, 300, layer);
+    ov.tiny = mkOv('tiny', T.tiny, 410, layer);
   }
   return { duration: DUR, fps: 30 };
 }

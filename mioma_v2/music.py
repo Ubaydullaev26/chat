@@ -101,7 +101,7 @@ def boing(f=220):
     n = int(SR * 0.5); t = np.arange(n) / SR
     return np.sin(2 * np.pi * f * (1 + 0.5 * np.sin(2 * np.pi * 9 * t) * np.exp(-t * 6)) * t) * np.exp(-t * 7)
 
-L = json.load(open('three/v2/mm/lines.json'))['lines']
+L = json.load(open(sys.argv[4] if len(sys.argv) > 4 else 'three/v2/mm/lines.json'))['lines']
 def buzz():  # «неправильно»: низкий дребезжащий тон вниз
     n = int(SR * 0.45); t = np.arange(n) / SR
     f = 190 - 70 * t / 0.45

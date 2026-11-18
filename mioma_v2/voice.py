@@ -1,6 +1,7 @@
 """Озвучка «5 мифов о миоме»: две подруги, нейроголос Microsoft Svetlana с разной высотой.
 
 Запуск:  python3 voice.py            (нужно: pip install edge-tts numpy, ffmpeg, доступ к speech.platform.bing.com)
+         LANG_CODE=uz python3 voice.py   — узбекская версия: voice_uz.wav, lines_uz.json, cues_uz.json
 Выход:   voice.wav — дорожка голоса;  three/v2/mm/lines.json — реплики: кто, когда, текст, громкость для рта (30 к/с).
 """
 import asyncio, json, os, subprocess, wave
@@ -27,6 +28,25 @@ LINES = [
     ("dil", "Всё, завтра же к врачу!", {}),
     ("mad", "Вот и правильно! Сохраните видео и отправьте подруге.", {"cta": 1}),
 ]
+LINES_UZ = [
+    ("dil", "Madina, menda mioma topishdi… Bu saraton-ku?!", {"myth": 1}),
+    ("mad", "Yo‘q, yo‘q! Mioma — xavfsiz tugun. Bu saraton emas.", {"truth": 1}),
+    ("dil", "Demak, bachadonni olib tashlashadimi?", {"myth": 2}),
+    ("mad", "Shart emas. Bachadonni saqlab qoladigan usullar bor: masalan, EMA yoki faqat tugunlarni olib tashlash.", {"truth": 2}),
+    ("dil", "Bolalar-chi? Mioma bilan homilador bo‘lib bo‘lmaydi-ku…", {"myth": 3}),
+    ("mad", "Miomasi bor ko‘p ayollar homilador bo‘lib, farzand ko‘radi. Hammasi tugunlarning o‘lchami va joylashuviga bog‘liq — buni shifokor baholaydi.", {"truth": 3}),
+    ("dil", "Qo‘shnim aytadi, o‘tlar uni eritib yuborarmish.", {"myth": 4}),
+    ("mad", "O‘tlar miomani eritmaydi. Vaqt esa o‘tadi, tugunlar o‘sadi.", {"truth": 4}),
+    ("dil", "Lekin menda hech narsa og‘rimayapti-ku…", {"myth": 5}),
+    ("mad", "Mioma ko‘pincha belgilarsiz o‘sadi. Shuning uchun yiliga bir marta ultratovush tekshiruvidan o‘ting.", {"truth": 5}),
+    ("dil", "Bo‘ldi, ertagayoq shifokorga boraman!", {}),
+    ("mad", "Barakalla! Videoni saqlang va dugonangizga yuboring.", {"cta": 1}),
+]
+LANG = os.environ.get("LANG_CODE", "ru")
+SUF = "" if LANG == "ru" else "_" + LANG
+if LANG == "uz":
+    LINES = LINES_UZ
+    VOICES = {"dil": ("uz-UZ-MadinaNeural", "+4%", "+14Hz"), "mad": ("uz-UZ-MadinaNeural", "+0%", "-6Hz")}
 START, GAP_AFTER = 0.9, {"dil": 0.35, "mad": 0.6}
 TAIL = 2.2
 
@@ -72,10 +92,10 @@ total = round(t - GAP_AFTER[LINES[-1][0]] + TAIL, 3)
 audio = np.zeros(int(SR * total) + 1)
 for L, x in zip(out_lines, clips):
     i0 = int(L["start"] * SR); audio[i0:i0 + len(x)] += x[:len(audio) - i0]
-with wave.open("voice.wav", "wb") as w:
+with wave.open(f"voice{SUF}.wav", "wb") as w:
     w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR); w.writeframes((np.clip(audio, -1, 1) * 32767).astype("<i2").tobytes())
-json.dump({"duration": total, "lines": out_lines}, open("three/v2/mm/lines.json", "w"), ensure_ascii=False)
-json.dump({"end": total}, open("three/v2/mm/cues.json", "w"))
+json.dump({"duration": total, "lines": out_lines}, open(f"three/v2/mm/lines{SUF}.json", "w"), ensure_ascii=False)
+json.dump({"end": total}, open(f"three/v2/mm/cues{SUF}.json", "w"))
 for L in out_lines:
     print(f'{L["start"]:6.2f}–{L["end"]:6.2f}  {L["who"]}: {L["text"]}')
 print(f"Длительность: {total:.2f} с")
