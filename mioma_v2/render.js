@@ -5,9 +5,10 @@ const { spawn } = require('child_process');
 const fs = require('fs'), path = require('path');
 const [style = 'toon', spp = '4', workers = '2', from = '0', to, step = '1', lang = 'ru'] = process.argv.slice(2);
 const SUF = lang === 'ru' ? '' : '_' + lang;
-const FPS = 30, dir = path.join(__dirname, 'frames' + SUF);
+const EP = process.env.EP || 'mm';                 // сцена: mm — «5 мифов», em — «Матку — удалять?»
+const FPS = 30, dir = path.join(__dirname, 'frames' + (EP === 'mm' ? '' : '_' + EP) + SUF);
 fs.mkdirSync(dir, { recursive: true });
-const cues = JSON.parse(fs.readFileSync(path.join(__dirname, `three/v2/mm/cues${SUF}.json`)));
+const cues = JSON.parse(fs.readFileSync(path.join(__dirname, `three/v2/${EP}/cues${SUF}.json`)));
 const n0 = Math.round(+from * FPS), n1 = Math.ceil((to ? +to : cues.end) * FPS);
 const todo = [];
 for (let n = n0; n < n1; n++) {
@@ -24,7 +25,7 @@ console.log(`кадров к съёмке: ${todo.length}`);
     const b = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--force-color-profile=srgb'] });
     const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
     p.on('pageerror', e => console.log('ERR', e.message));
-    await p.goto(`http://127.0.0.1:${port}/v2/mm/page.html?style=${style}&spp=${spp}&lang=${lang}`);
+    await p.goto(`http://127.0.0.1:${port}/v2/${EP}/page.html?style=${style}&spp=${spp}&lang=${lang}`);
     await p.waitForFunction(() => window.scene3d && window.scene3d.ready, null, { timeout: 300000 });
     for (const [n, f] of jobs) {
       await p.evaluate(t => window.scene3d.render(t), n / FPS);
