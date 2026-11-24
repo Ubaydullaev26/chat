@@ -4,6 +4,7 @@ three/*
 three/v2/*
 !three/v2/mm/
 !three/v2/em/
+!three/v2/ep/
 out/
 frames/
 *.wav
@@ -12,3 +13,4 @@ video_silent*.mp4
 frames_twos/
 frames_uz/
 frames_em*/
+frames_ep*/

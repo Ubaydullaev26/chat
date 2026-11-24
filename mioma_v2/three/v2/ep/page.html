@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<title>Как проходит ЭМА</title>
+<style>
+@font-face{font-family:Nunito;font-weight:800;src:url(fonts/nunito-cyrillic-800-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:Nunito;font-weight:800;src:url(fonts/nunito-latin-800-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+2122,U+2212}
+@font-face{font-family:Nunito;font-weight:900;src:url(fonts/nunito-cyrillic-900-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:Nunito;font-weight:900;src:url(fonts/nunito-latin-900-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+2122,U+2212}
+@font-face{font-family:Nunito;font-weight:700;src:url(fonts/nunito-cyrillic-700-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:Nunito;font-weight:700;src:url(fonts/nunito-latin-700-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+2122,U+2212}
+html,body{margin:0;background:#111;overflow:hidden}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:Nunito,'Noto Color Emoji',sans-serif}
+canvas{display:block;width:1080px;height:1920px;position:absolute;left:0;top:0}
+.ov{position:absolute;left:0;right:0;display:flex;justify-content:center;opacity:0}
+.title>div{background:#fff;border-radius:40px;padding:22px 44px;font-weight:900;font-size:70px;color:#3a1f2b;box-shadow:0 10px 0 rgba(160,40,80,.25),0 18px 40px rgba(0,0,0,.25)}
+.hook>div{width:900px;box-sizing:border-box;background:#e53935;color:#fff;border-radius:40px;padding:26px 36px;text-align:center;font-weight:900;font-size:84px;line-height:1.05;box-shadow:0 12px 0 #a51f1c,0 20px 44px rgba(0,0,0,.35)}
+.hook small{display:block;font-size:52px;margin-bottom:6px;color:#ffe0e0}
+.stop>div{background:#fff;color:#e53935;border:10px solid #e53935;border-radius:36px;padding:14px 46px;font-weight:900;font-size:120px;box-shadow:0 14px 40px rgba(0,0,0,.3)}
+.pill>div{background:#fff;border-radius:30px;padding:16px 30px;font-weight:900;font-size:54px;color:#2a1a22;box-shadow:0 8px 0 rgba(0,0,0,.15),0 14px 30px rgba(0,0,0,.22)}
+.q>div{width:900px;box-sizing:border-box;background:#ffd23f;color:#2a1a22;border-radius:36px;padding:24px 34px;text-align:center;font-weight:900;font-size:76px;line-height:1.08;box-shadow:0 10px 0 #c79a00,0 18px 40px rgba(0,0,0,.3)}
+.doc>div{background:#1f6fd1;color:#fff;border-radius:999px;padding:16px 36px;font-weight:900;font-size:50px;box-shadow:0 8px 0 #154e95}
+.cta2>div{width:920px;box-sizing:border-box;background:#e8336f;color:#fff;border-radius:36px;padding:24px 34px;text-align:center;font-weight:900;font-size:62px;line-height:1.1;box-shadow:0 10px 0 #b51f52,0 18px 40px rgba(0,0,0,.3)}
+.cta2 b{color:#ffe14d}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.lab>div{background:rgba(255,255,255,.95);border-radius:30px;padding:16px 30px;font-weight:900;font-size:56px;line-height:1.1;color:#2a1a22;text-align:center;max-width:900px;box-shadow:0 8px 0 rgba(0,0,0,.15),0 14px 30px rgba(0,0,0,.25)}
+.lab b{color:#e8336f}
+.green>div{background:#2fb36d;color:#fff;border-radius:999px;padding:18px 40px;font-weight:900;font-size:54px;box-shadow:0 8px 0 #1e8a50,0 16px 30px rgba(0,0,0,.25)}
+.title b{color:#e8336f}
+.card>div{position:relative;width:860px;box-sizing:border-box;background:#fff;border-radius:34px;padding:22px 34px 26px;box-shadow:0 10px 0 rgba(0,0,0,.18),0 18px 40px rgba(0,0,0,.25);text-align:center}
+.card .lab{font-weight:900;font-size:40px;letter-spacing:2px}
+.card .txt{font-weight:900;font-size:58px;line-height:1.1;color:#2a1a22;margin-top:6px}
+.card .stamp{position:absolute;right:-18px;top:-34px;font-size:96px;transform-origin:50% 50%}
+.myth>div{border:8px solid #e53935}.myth .lab{color:#e53935}
+.truth>div{border:8px solid #2fb36d}.truth .lab{color:#1e9a58}
+.sub>div{max-width:920px;background:rgba(25,15,20,.72);border-radius:26px;padding:14px 26px;color:#fff;font-weight:800;font-size:40px;line-height:1.2;text-align:center}
+.sub .who{font-weight:900;margin-right:10px}
+.cta>div{background:#e8336f;color:#fff;border-radius:999px;padding:20px 44px;font-weight:900;font-size:48px;box-shadow:0 8px 0 #b51f52,0 16px 30px rgba(0,0,0,.25)}
+.tiny>div{background:rgba(255,255,255,.85);border-radius:18px;padding:10px 22px;font-weight:700;font-size:28px;color:#5d4250;max-width:900px;text-align:center}
+</style>
+<script type="importmap">{ "imports": { "three": "../../node_modules/three/build/three.module.js", "three/addons/": "../../node_modules/three/examples/jsm/", "three/examples/jsm/": "../../node_modules/three/examples/jsm/", "n8ao": "../../node_modules/n8ao/dist/N8AO.js", "postprocessing": "../../node_modules/postprocessing/build/index.js" } }</script>
+</head>
+<body>
+<div id="stage"><canvas id="c" width="1080" height="1920"></canvas><div id="layer"></div><div id="flash"></div></div>
+<script type="module">
+  const S = await import('./scene.js');
+  const info = await S.init(document.getElementById('c'), document.getElementById('layer'));
+  await document.fonts.ready;
+  window.scene3d = { render: (t) => { S.render(t); return true; }, info, ready: true };
+</script>
+</body></html>
