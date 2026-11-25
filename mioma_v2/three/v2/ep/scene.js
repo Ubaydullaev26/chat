@@ -21,6 +21,16 @@ const TXT = {
     tiny: 'Подходит не всем: решение принимает врач после обследования',
     names: { dil: 'Дилноза', mad: 'Мадина' },
   },
+  uz: {
+    hook: '<small>38 yosh.</small>«Bachadonni olib tashlash kerak» 😱', stop: 'TO‘XTA ✋',
+    l_uterus: 'Mioma tugunlari <b>qon bilan oziqlanadi</b>', l_xray: '<b>EMA</b> — bachadon arteriyalari embolizatsiyasi', l_xray2: '✂️ Qo‘lda kichik teshik · kesiksiz',
+    l_tunnel: 'Mikrozarrachalar <b>tomirlarni berkitadi</b>', l_shrink: 'Tugunlar <b>kichrayadi</b>', keep: '💗 Bachadon saqlanadi',
+    cards: ['⏱️ Muolaja — taxminan 1 soat', '🏠 1–2 kunda uyga', '✂️ Kesiksiz va choksiz'],
+    q: 'Nega bu haqda jim turishadi? 👇', doc: '👩‍⚕️ Intervension jarroh',
+    cta: 'Izohlarda <b>«EMA»</b> deb yozing 👇',
+    tiny: 'Hammaga ham mos emas: qarorni shifokor tekshiruvdan keyin qabul qiladi',
+    names: { dil: 'Dilnoza', mad: 'Madina' },
+  },
 };
 const LANG = new URLSearchParams(location.search).get('lang') || 'ru';
 const T = TXT[LANG] || TXT.ru;

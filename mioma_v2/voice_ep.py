@@ -29,6 +29,21 @@ LINES = [
 ]
 LANG = os.environ.get("LANG_CODE", "ru")
 SUF = "" if LANG == "ru" else "_" + LANG
+if LANG == "uz":
+    VOICES = {"dil": ("uz-UZ-MadinaNeural", "+4%", "+14Hz"), "mad": ("uz-UZ-MadinaNeural", "+0%", "-6Hz")}
+    LINES = [
+        ("mad", "Men o‘ttiz sakkiz yoshdaman… shifokor esa bachadonni olib tashlash kerak, deyapti.", {}),
+        ("dil", "To‘xta! Embolizatsiya haqida eshitganmisan?", {}),
+        ("mad", "Bu nima o‘zi?", {}),
+        ("dil", "Qara, hozir ko‘rsataman.", {}),
+        ("dil", "Mioma tugunlari o‘sadi, chunki ularni bachadon arteriyalari oziqlantiradi.", {"shot": "uterus"}),
+        ("dil", "Shifokor qo‘lda kichik teshik ochadi va ingichka kateterni bachadongacha olib boradi. Kesiksiz, mahalliy og‘riqsizlantirish bilan.", {"shot": "xray"}),
+        ("dil", "Kateter orqali mikrozarrachalar yuboriladi. Ular faqat tugunlarni oziqlantiradigan tomirlarni berkitadi.", {"shot": "tunnel"}),
+        ("dil", "Oziqlanmagan tugunlar kichrayadi, bachadon esa saqlanib qoladi.", {"shot": "shrink"}),
+        ("dil", "Muolaja taxminan bir soat davom etadi, uyga esa bir-ikki kundan keyin qaytasiz.", {"shot": "facts"}),
+        ("mad", "Nega bu haqda hech kim menga aytmadi?!", {}),
+        ("dil", "Buni intervension jarroh bajaradi. Hammaga ham to‘g‘ri kelmaydi — lekin so‘rab ko‘rish kerak. Izohlarda yozing, batafsil aytib beramiz!", {}),
+    ]
 START, GAP_AFTER = 0.15, {"dil": 0.3, "mad": 0.22}
 TAIL = 2.6
 
